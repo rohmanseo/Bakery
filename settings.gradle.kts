@@ -7,4 +7,6 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "Bakery App"
-include ':app'
+include(":app")
+include(":auth")
+include(":app:sample_module")
