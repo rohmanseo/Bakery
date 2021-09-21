@@ -56,6 +56,7 @@ dependencies {
 
     implementation(Dependencies.AndroidX.glide)
     kapt(Dependencies.AndroidX.glide_annotation)
+    implementation(Dependencies.CustomView.carousel_view)
 
     implementation(Dependencies.DI.koin)
     testImplementation(Dependencies.DI.koin_test_imp)
