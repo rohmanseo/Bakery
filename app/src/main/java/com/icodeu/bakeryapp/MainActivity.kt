@@ -1,7 +1,10 @@
 package com.icodeu.bakeryapp
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.WindowInsetsController
+import android.view.WindowManager
 import com.icodeu.bakeryapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
