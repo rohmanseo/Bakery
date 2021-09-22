@@ -7,9 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
+import com.icodeu.bakeryapp.R
 import com.icodeu.bakeryapp.databinding.FragmentRecommendedBinding
 import com.icodeu.bakeryapp.ui.home.Cake
-import com.icodeu.bakeryapp.ui.home.RecommedRVAdapter
+import com.icodeu.bakeryapp.ui.home.rv_adapters.RecommedRVAdapter
+import com.icodeu.bakeryapp.ui.item.ItemFragment
 
 class RecommendedFragment : Fragment(), RecommedRVAdapter.Interaction {
 
@@ -41,6 +44,7 @@ class RecommendedFragment : Fragment(), RecommedRVAdapter.Interaction {
     }
 
     override fun onItemSelected(position: Int, item: Cake) {
+        ItemFragment().show(childFragmentManager,"")
 
     }
 }
