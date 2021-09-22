@@ -12,6 +12,8 @@
         android:layout_height="match_parent">
 
         <LinearLayout
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
@@ -49,6 +51,7 @@
 
             <androidx.appcompat.widget.SearchView
                 android:id="@+id/svMain"
+                android:focusable="false"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/rounded_shape_gray"
