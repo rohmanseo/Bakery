@@ -45,10 +45,10 @@ class RegisterFragment : Fragment() {
                 .into(imgBaker)
 
             btnSignUp.setOnClickListener {
-                findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
+                findNavController().popBackStack()
             }
             tvLogin.setOnClickListener {
-                findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
+                findNavController().popBackStack()
             }
 
         }
