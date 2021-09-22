@@ -19,6 +19,7 @@ object Versions {
     const val circle_indicator = "2.1.6"
     const val simple_storage = "0.12.0"
     const val koin_version = "3.1.2"
+    const val carousel_view = "1.2.1"
 }
 
 object Dependencies {
@@ -43,8 +44,13 @@ object Dependencies {
     object Material {
         const val material = "com.google.android.material:material:${Versions.material}"
         const val legacy_support = "androidx.legacy:legacy-support-v4:${Versions.legacy_support}"
+    }
+
+    object CustomView{
+        const val carousel_view = "com.github.sparrow007:carouselrecyclerview:${Versions.carousel_view}"
         const val circle_indicator = "me.relex:circleindicator:${Versions.circle_indicator}"
     }
+
     object Reactivex{
         const val rx_android_2 = "io.reactivex.rxjava2:rxandroid:${Versions.rx_android2}"
         const val rx_java2 =     "io.reactivex.rxjava2:rxjava:${Versions.rx_java2}"

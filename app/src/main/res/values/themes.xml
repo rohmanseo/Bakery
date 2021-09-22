@@ -1,6 +1,9 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.BakeryApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowFullscreen">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="fontFamily">@font/lato_bold</item>
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
@@ -12,5 +15,13 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+    </style>
+    <style name="RatingBarTheme" parent="Widget.AppCompat.RatingBar.Small">
+        <item name="colorControlNormal">@color/gray</item>
+        <item name="colorControlActivated">@color/yellow</item>
+    </style>
+    <style name="TabLayoutTheme" parent="@android:style/TextAppearance.Widget.TabWidget">
+        <item name="fontFamily">@font/lato_bold</item>
+        <item name="android:textAllCaps">false</item>
     </style>
 </resources>

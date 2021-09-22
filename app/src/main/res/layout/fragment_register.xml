@@ -30,6 +30,7 @@
                 android:fontFamily="@font/lato_bold"
                 android:text="Sign-up"
                 android:textAllCaps="false"
+                android:textColor="@color/black"
                 android:textSize="50sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
@@ -123,6 +124,7 @@
 
 
             <Button
+                android:background="@drawable/rounded_shape_primary"
                 android:id="@+id/btnSignUp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -147,14 +149,14 @@
                 app:layout_constraintTop_toBottomOf="@+id/btnSignUp" />
 
             <TextView
-                android:layout_marginTop="16dp"
-                android:paddingBottom="100dp"
                 android:id="@+id/tvLogin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:autoLink="all"
                 android:fontFamily="@font/lato_bold"
                 android:linksClickable="false"
+                android:paddingBottom="100dp"
                 android:text="@string/login"
                 android:textColor="@color/primary"
                 app:layout_constraintEnd_toEndOf="parent"
