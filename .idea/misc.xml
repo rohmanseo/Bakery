@@ -10,8 +10,12 @@
         <entry key="..\:/Users/Rohman/AndroidStudioProjects/BakeryApp/app/src/main/res/drawable/rounded_shape_primary.xml" value="0.216796875" />
         <entry key="..\:/Users/Rohman/AndroidStudioProjects/BakeryApp/app/src/main/res/layout/activity_main.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/Rohman/AndroidStudioProjects/BakeryApp/app/src/main/res/layout/fragment_home.xml" value="0.22" />
+        <entry key="..\:/Users/Rohman/AndroidStudioProjects/BakeryApp/app/src/main/res/layout/fragment_item.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/Rohman/AndroidStudioProjects/BakeryApp/app/src/main/res/layout/fragment_login.xml" value="0.12" />
+        <entry key="..\:/Users/Rohman/AndroidStudioProjects/BakeryApp/app/src/main/res/layout/fragment_recommended.xml" value="0.18" />
         <entry key="..\:/Users/Rohman/AndroidStudioProjects/BakeryApp/app/src/main/res/layout/fragment_register.xml" value="0.18" />
+        <entry key="..\:/Users/Rohman/AndroidStudioProjects/BakeryApp/app/src/main/res/layout/item_carousel.xml" value="0.33" />
+        <entry key="..\:/Users/Rohman/AndroidStudioProjects/BakeryApp/app/src/main/res/layout/item_carousel_recommended.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/Rohman/AndroidStudioProjects/BakeryApp/app/src/main/res/layout/loading_dialog.xml" value="0.2" />
         <entry key="..\:/Users/Rohman/AndroidStudioProjects/BakeryApp/auth/src/main/res/layout/activity_auth.xml" value="0.18" />
         <entry key="..\:/Users/Rohman/AndroidStudioProjects/BakeryApp/auth/src/main/res/layout/fragment_auth.xml" value="0.2046875" />

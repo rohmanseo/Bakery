@@ -55,6 +55,7 @@ dependencies {
     implementation(Dependencies.Material.material)
 
     implementation(Dependencies.AndroidX.glide)
+    implementation("androidx.legacy:legacy-support-v4:1.0.0")
     kapt(Dependencies.AndroidX.glide_annotation)
     implementation(Dependencies.CustomView.carousel_view)
 
