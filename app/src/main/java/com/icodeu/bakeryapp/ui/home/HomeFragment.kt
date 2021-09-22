@@ -5,17 +5,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.icodeu.bakeryapp.R
 import com.icodeu.bakeryapp.databinding.FragmentHomeBinding
 import com.icodeu.bakeryapp.ui.home.popular.PopularViewModel
 import com.icodeu.bakeryapp.ui.home.recommended.RecommendAdapter
+import com.icodeu.bakeryapp.ui.home.rv_adapters.CarouselAdapter
+import com.icodeu.bakeryapp.ui.item.ItemFragment
 
 class HomeFragment : Fragment(), CarouselAdapter.Interaction {
 
@@ -94,6 +97,6 @@ class HomeFragment : Fragment(), CarouselAdapter.Interaction {
     }
 
     override fun onItemSelected(position: Int, item: Cake) {
-
+        ItemFragment().show(childFragmentManager,"")
     }
 }

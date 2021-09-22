@@ -1,4 +1,4 @@
-package com.icodeu.bakeryapp.ui.home
+package com.icodeu.bakeryapp.ui.home.rv_adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -11,8 +11,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.icodeu.bakeryapp.R
+import com.icodeu.bakeryapp.ui.home.Cake
 
-class CarouselAdapter(private val interaction: Interaction? = null) :
+class RecommedRVAdapter(private val interaction: Interaction? = null) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Cake>() {
@@ -33,7 +34,7 @@ class CarouselAdapter(private val interaction: Interaction? = null) :
 
         return ViewHolder(
             LayoutInflater.from(parent.context).inflate(
-                R.layout.item_carousel,
+                R.layout.item_carousel_recommended,
                 parent,
                 false
             ),
