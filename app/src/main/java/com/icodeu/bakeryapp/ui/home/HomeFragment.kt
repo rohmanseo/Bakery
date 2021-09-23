@@ -52,8 +52,8 @@ class HomeFragment : Fragment(), CarouselAdapter.Interaction {
         setupPopular()
         setupRecommended()
         setupCardAvatar()
-
     }
+
 
     private fun setupCardAvatar() {
         binding.apply {

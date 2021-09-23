@@ -14,12 +14,14 @@ object Versions {
     const val legacy_support = "1.0.0"
     const val view_pager2 = "1.0.0"
     const val glide = "4.12.0"
-    const val rx_android2 = "2.1.1"
-    const val rx_java2 = "2.2.10"
+    const val rx_android_3 = "3.0.0"
+    const val rx_java_3 = "3.0.0"
     const val circle_indicator = "2.1.6"
     const val simple_storage = "0.12.0"
     const val koin_version = "3.1.2"
-    const val carousel_view = "1.2.1"
+    const val rx_binding = "4.0.0"
+    const val retrofit = "2.9.0"
+    const val moshi_kt = "1.11.0"
 }
 
 object Dependencies {
@@ -36,10 +38,10 @@ object Dependencies {
         const val navigation_dynamic_support = "androidx.navigation:navigation-dynamic-features-fragment:${Versions.nav_version}"
         const val room = "androidx.room:room-runtime:${Versions.room_version}"
         const val room_compiler = "androidx.room:room-compiler:${Versions.room_version}"
-        const val room_rxjava2 = "androidx.room:room-rxjava2:${Versions.room_version}"
         const val view_pager_2 = "androidx.viewpager2:viewpager2:${Versions.view_pager2}"
         const val glide = "com.github.bumptech.glide:glide:${Versions.glide}"
         const val glide_annotation = "com.github.bumptech.glide:compiler:${Versions.glide}"
+        const val moshi_kt = "1.11.0"
     }
     object Material {
         const val material = "com.google.android.material:material:${Versions.material}"
@@ -47,16 +49,21 @@ object Dependencies {
     }
 
     object CustomView{
-        const val carousel_view = "com.github.sparrow007:carouselrecyclerview:${Versions.carousel_view}"
         const val circle_indicator = "me.relex:circleindicator:${Versions.circle_indicator}"
     }
 
     object Reactivex{
-        const val rx_android_2 = "io.reactivex.rxjava2:rxandroid:${Versions.rx_android2}"
-        const val rx_java2 =     "io.reactivex.rxjava2:rxjava:${Versions.rx_java2}"
+        const val rx_android_3 = "io.reactivex.rxjava3:rxandroid:${Versions.rx_android_3}"
+        const val rx_java_3 =     "io.reactivex.rxjava3:rxjava:${Versions.rx_java_3}"
+        const val androidx_binding = "com.jakewharton.rxbinding4:rxbinding-core:${Versions.rx_binding}"
     }
     object Storage{
         const val simple_storage = "com.anggrayudi:storage:${Versions.simple_storage}"
+    }
+    object Networking{
+        const val retrofit = "com.squareup.retrofit2:retrofit:${Versions.retrofit}"
+        const val moshi = "com.squareup.retrofit2:converter-moshi:${Versions.retrofit}"
+        const val moshi_kt = "com.squareup.moshi:moshi-kotlin:${Versions.moshi_kt}"
     }
     object DI{
         const val koin = "io.insert-koin:koin-core:${Versions.koin_version}"

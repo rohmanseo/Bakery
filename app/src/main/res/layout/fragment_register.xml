@@ -51,6 +51,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/tvSignUp">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress" />
@@ -72,6 +73,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/nameOutline">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress" />
@@ -94,6 +96,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/emailOutline">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword" />
@@ -116,6 +119,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/passwordoutline">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtRePassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword" />
