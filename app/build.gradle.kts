@@ -55,12 +55,18 @@ dependencies {
     implementation(Dependencies.Material.material)
 
     implementation(Dependencies.AndroidX.glide)
-    implementation("androidx.legacy:legacy-support-v4:1.0.0")
     kapt(Dependencies.AndroidX.glide_annotation)
-    implementation(Dependencies.CustomView.carousel_view)
 
     implementation(Dependencies.DI.koin)
     testImplementation(Dependencies.DI.koin_test_imp)
+
+    implementation(Dependencies.Reactivex.rx_android_3)
+    implementation(Dependencies.Reactivex.rx_java_3)
+    implementation(Dependencies.Reactivex.androidx_binding)
+
+    implementation(Dependencies.Networking.retrofit)
+    implementation(Dependencies.Networking.moshi)
+    implementation(Dependencies.Networking.moshi_kt)
 
     testImplementation(Dependencies.Test.jUnit)
     androidTestImplementation(Dependencies.Test.jUnitExt)

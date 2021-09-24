@@ -12,6 +12,8 @@
         android:layout_height="match_parent">
 
         <LinearLayout
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
@@ -24,21 +26,14 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp">
 
-                <androidx.cardview.widget.CardView
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    app:cardCornerRadius="10dp">
-
-                    <ImageView
-                        android:id="@+id/btnNavDrawer"
-                        android:layout_width="50sp"
-                        android:layout_height="50dp"
-                        android:background="@color/transparent"
-                        android:src="@drawable/ic_btn_hamburger" />
-                </androidx.cardview.widget.CardView>
+                    android:text="Welcome\nJonna Doe"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/cardAvatar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
@@ -56,6 +51,7 @@
 
             <androidx.appcompat.widget.SearchView
                 android:id="@+id/svMain"
+                android:focusable="false"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/rounded_shape_gray"

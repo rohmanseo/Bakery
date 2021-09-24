@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_navigation"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/loginFragment">
 
     <fragment
         android:id="@+id/homeFragment"
@@ -13,12 +13,6 @@
         <action
             android:id="@+id/action_homeFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
-        <action
-            android:id="@+id/action_homeFragment_to_itemFragment"
-            app:destination="@id/itemFragment"
-            app:launchSingleTop="false"
-            app:popUpTo="@id/homeFragment"
-            app:popUpToInclusive="false" />
     </fragment>
     <fragment
         tools:layout="@layout/fragment_login"
@@ -44,15 +38,5 @@
         tools:layout="@layout/fragment_register"
         android:id="@+id/registerFragment"
         android:name="com.icodeu.bakeryapp.ui.register.RegisterFragment"
-        android:label="RegisterFragment" >
-        <action
-            android:id="@+id/action_registerFragment_to_loginFragment"
-            app:destination="@id/loginFragment"
-            app:popUpTo="@id/loginFragment"
-            app:popUpToInclusive="true" />
-    </fragment>
-    <fragment
-        android:id="@+id/itemFragment"
-        android:name="com.icodeu.bakeryapp.ui.item.ItemFragment"
-        android:label="ItemFragment" />
+        android:label="RegisterFragment" />
 </navigation>
