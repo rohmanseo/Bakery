@@ -15,6 +15,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.icodeu.bakeryapp.R
 import com.icodeu.bakeryapp.databinding.FragmentHomeBinding
+import com.icodeu.bakeryapp.ui.dialog.ProfileDialog
 import com.icodeu.bakeryapp.ui.home.popular.PopularViewModel
 import com.icodeu.bakeryapp.ui.home.recommended.RecommendAdapter
 import com.icodeu.bakeryapp.ui.home.rv_adapters.CarouselAdapter
@@ -50,7 +51,16 @@ class HomeFragment : Fragment(), CarouselAdapter.Interaction {
         super.onViewCreated(view, savedInstanceState)
         setupPopular()
         setupRecommended()
+        setupCardAvatar()
+    }
 
+
+    private fun setupCardAvatar() {
+        binding.apply {
+            cardAvatar.setOnClickListener {
+                ProfileDialog().show(parentFragmentManager,"")
+            }
+        }
     }
 
     private fun setupRecommended() {

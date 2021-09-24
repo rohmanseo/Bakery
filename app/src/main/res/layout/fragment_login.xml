@@ -53,6 +53,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/tvLogin">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress" />
@@ -77,6 +78,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/emailOutline">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword" />
@@ -84,7 +86,6 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
-                android:background="@drawable/rounded_shape_primary"
                 android:id="@+id/btnLogin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
