@@ -22,6 +22,7 @@ object Versions {
     const val rx_binding = "4.0.0"
     const val retrofit = "2.9.0"
     const val moshi_kt = "1.11.0"
+    const val room_ktx = "2.3.0"
 }
 
 object Dependencies {
@@ -37,6 +38,7 @@ object Dependencies {
         const val navigation_safe_args = "androidx.navigation:navigation-safe-args-gradle-plugin:${Versions.nav_version}"
         const val navigation_dynamic_support = "androidx.navigation:navigation-dynamic-features-fragment:${Versions.nav_version}"
         const val room = "androidx.room:room-runtime:${Versions.room_version}"
+        const val room_ktx = "androidx.room:room-ktx:${Versions.room_ktx}"
         const val room_compiler = "androidx.room:room-compiler:${Versions.room_version}"
         const val view_pager_2 = "androidx.viewpager2:viewpager2:${Versions.view_pager2}"
         const val glide = "com.github.bumptech.glide:glide:${Versions.glide}"
@@ -66,7 +68,7 @@ object Dependencies {
         const val moshi_kt = "com.squareup.moshi:moshi-kotlin:${Versions.moshi_kt}"
     }
     object DI{
-        const val koin = "io.insert-koin:koin-core:${Versions.koin_version}"
+        const val koin = "io.insert-koin:koin-android:${Versions.koin_version}"
         const val koin_test_imp = "io.insert-koin:koin-test:${Versions.koin_version}"
     }
 

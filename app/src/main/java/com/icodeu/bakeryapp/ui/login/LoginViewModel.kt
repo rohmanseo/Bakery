@@ -4,21 +4,29 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.icodeu.bakeryapp.models.SuccessResponse
-import com.icodeu.bakeryapp.network.LoginApi
+import com.icodeu.bakeryapp.repositories.UserRepository
+import com.icodeu.bakeryapp.utils.UIState
 import kotlinx.coroutines.launch
 
-class LoginViewModel : ViewModel() {
+class LoginViewModel(val userRepository: UserRepository) : ViewModel() {
 
-    private var _user = MutableLiveData<LiveData<SuccessResponse>>()
-    var user: LiveData<SuccessResponse>? = _user.value
+    private var _user = MutableLiveData<LoginState>(LoginState(UIState.STATE_IDLE))
+    val user: LiveData<LoginState>
+        get() = _user
+    private var _isLoggedIn = MutableLiveData<Boolean>()
+    val isLoggedIn: LiveData<Boolean>
+        get() = _isLoggedIn
 
-    fun login(email: String, password: String): LiveData<SuccessResponse>? {
+
+    fun login(email: String, password: String) {
         viewModelScope.launch {
-            LoginApi.retrofitService.login(email, password).let {
-                _user.postValue(it)
-            }
+            _user.value = userRepository.login(email, password)
         }
-        return user
+    }
+
+    fun isLoggedIn() {
+        viewModelScope.launch {
+            _isLoggedIn.value = userRepository.isLoggedIn()
+        }
     }
 }
