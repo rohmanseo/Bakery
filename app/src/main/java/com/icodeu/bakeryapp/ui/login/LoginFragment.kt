@@ -12,20 +12,24 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.icodeu.bakeryapp.R
 import com.icodeu.bakeryapp.databinding.FragmentLoginBinding
+import com.icodeu.bakeryapp.ui.dialog.LoadingDialog
 import com.icodeu.bakeryapp.utils.CommonUtils.isNotEmpty
 import com.icodeu.bakeryapp.utils.CommonUtils.isNotError
 import com.icodeu.bakeryapp.utils.CommonUtils.isValidEmail
 import com.icodeu.bakeryapp.utils.CommonUtils.shortSnackbar
+import com.icodeu.bakeryapp.utils.UIState
 import com.jakewharton.rxbinding4.widget.textChanges
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.concurrent.TimeUnit
 
 class LoginFragment : Fragment() {
 
     private lateinit var binding: FragmentLoginBinding
     val compositeDisposable = CompositeDisposable()
-    val viewModel: LoginViewModel by viewModels()
+    val loginViewModel: LoginViewModel by viewModel()
+    private val dialog = LoadingDialog()
 
 
     override fun onAttach(context: Context) {
@@ -50,6 +54,12 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        loginViewModel.isLoggedIn()
+        loginViewModel.isLoggedIn.observe(viewLifecycleOwner,Observer{
+            if (it){
+                findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+            }
+        })
         binding.apply {
             Glide.with(requireActivity())
                 .load(R.drawable.baker)
@@ -64,6 +74,16 @@ class LoginFragment : Fragment() {
             setupRxBinding()
             setupLoginButton()
 
+            loginViewModel.user.observe(viewLifecycleOwner, Observer {
+                if (it.state == UIState.STATE_SUCCESS) {
+                    dialog.dismiss()
+                    findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+                } else if (it.state == UIState.STATE_ERROR) {
+                    requireView().shortSnackbar("Error, ${it.errorMessage}")
+                    dialog.dismiss()
+                }
+            })
+
         }
     }
 
@@ -74,7 +94,7 @@ class LoginFragment : Fragment() {
                 val isNotError = isNotError(emailOutline, passwordoutline)
 
                 if (isNotEmpty && isNotError) {
-                    login(edtEmail.text.toString(),edtPassword.text.toString())
+                    login(edtEmail.text.toString(), edtPassword.text.toString())
                 } else {
                     requireView().shortSnackbar("Error")
                 }
@@ -116,11 +136,9 @@ class LoginFragment : Fragment() {
         }
     }
 
-    private fun login(email:String,password:String) {
-//        findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
-        viewModel.login(email,password)?.observe(viewLifecycleOwner, Observer {
-
-        })
+    private fun login(email: String, password: String) {
+        dialog.show(parentFragmentManager, "")
+        loginViewModel.login(email, password)
     }
 
     override fun onDestroyView() {

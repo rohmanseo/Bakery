@@ -68,6 +68,10 @@ dependencies {
     implementation(Dependencies.Networking.moshi)
     implementation(Dependencies.Networking.moshi_kt)
 
+    implementation(Dependencies.AndroidX.room)
+    implementation(Dependencies.AndroidX.room_ktx)
+    kapt(Dependencies.AndroidX.room_compiler)
+
     testImplementation(Dependencies.Test.jUnit)
     androidTestImplementation(Dependencies.Test.jUnitExt)
     androidTestImplementation(Dependencies.Test.espresso)
