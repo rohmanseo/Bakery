@@ -10,6 +10,17 @@ import com.icodeu.bakeryapp.R
 
 class LoadingDialog : DialogFragment() {
 
+    companion object {
+        private var instance: LoadingDialog? = null
+        fun getInstance(): LoadingDialog {
+            if (instance == null) {
+                instance = LoadingDialog()
+            }
+
+            return instance!!
+        }
+    }
+
     private lateinit var materialDialog: AlertDialog
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
