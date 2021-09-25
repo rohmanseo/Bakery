@@ -6,6 +6,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.icodeu.bakeryapp.databinding.ActivityMainBinding
 import com.icodeu.bakeryapp.ui.dialog.LoadingDialog
+import com.icodeu.bakeryapp.ui.dialog.LoadingDialog.Companion.DIALOG_LOADING_TAG
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -20,12 +21,8 @@ class MainActivity : AppCompatActivity() {
     fun showLoading(show: Boolean) {
         binding.apply {
             if (show) {
-                println("dialog showing")
-                dialog.show(supportFragmentManager, "DIALOG")
-                loadingView.visibility = View.VISIBLE
+                dialog.show(supportFragmentManager, DIALOG_LOADING_TAG)
             } else {
-                println("dialog dismiss")
-                loadingView.visibility = View.GONE
                 dialog.dismiss()
             }
         }
