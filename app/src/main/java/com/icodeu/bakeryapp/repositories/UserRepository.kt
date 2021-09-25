@@ -31,8 +31,20 @@ class UserRepository(
         )
     }
 
+    suspend fun getLoggedInUser(): User {
+        return userLocalDataStore.getUser()
+    }
+
+    suspend fun logout(): Boolean {
+        val user = userLocalDataStore.getUser()
+        val response = userRemoteDataStore.logout("Bearer ${user.token}")
+        if (response){
+            userLocalDataStore.delete(user)
+        }
+        return response
+    }
+
     suspend fun isLoggedIn(): Boolean {
-        println("is logged in repo: ${userLocalDataStore.getUser()}")
-        return userLocalDataStore.getUser() != null
+        return userLocalDataStore.getUserCount() != 0
     }
 }
