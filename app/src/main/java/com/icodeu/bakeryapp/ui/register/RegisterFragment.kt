@@ -201,7 +201,7 @@ class RegisterFragment : Fragment() {
                         passwordSubscriber,
                         passwordReSubscriber,
                         BiFunction { _, _ ->
-                            edtRePassword.text != edtPassword.text
+                            edtRePassword.text.toString() != edtPassword.text.toString()
                         })
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe {
