@@ -55,7 +55,11 @@ dependencies {
     implementation(Dependencies.Material.material)
 
     implementation(Dependencies.AndroidX.glide)
-    kapt(Dependencies.AndroidX.glide_annotation)
+    implementation("androidx.legacy:legacy-support-v4:1.0.0")
+    implementation("androidx.test:runner:1.4.0")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.0-alpha01")
+    androidTestImplementation("androidx.test:rules:1.4.1-alpha01")
+    annotationProcessor(Dependencies.AndroidX.glide_annotation)
 
     implementation(Dependencies.DI.koin)
     testImplementation(Dependencies.DI.koin_test_imp)
@@ -67,6 +71,10 @@ dependencies {
     implementation(Dependencies.Networking.retrofit)
     implementation(Dependencies.Networking.moshi)
     implementation(Dependencies.Networking.moshi_kt)
+
+    implementation(Dependencies.AndroidX.room)
+    implementation(Dependencies.AndroidX.room_ktx)
+    kapt(Dependencies.AndroidX.room_compiler)
 
     testImplementation(Dependencies.Test.jUnit)
     androidTestImplementation(Dependencies.Test.jUnitExt)

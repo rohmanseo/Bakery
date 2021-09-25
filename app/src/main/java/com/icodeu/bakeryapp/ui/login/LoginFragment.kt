@@ -6,12 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.icodeu.bakeryapp.MainActivity
 import com.icodeu.bakeryapp.R
 import com.icodeu.bakeryapp.databinding.FragmentLoginBinding
+import com.icodeu.bakeryapp.ui.dialog.LoadingDialog
 import com.icodeu.bakeryapp.utils.CommonUtils.isNotEmpty
 import com.icodeu.bakeryapp.utils.CommonUtils.isNotError
 import com.icodeu.bakeryapp.utils.CommonUtils.isValidEmail
@@ -19,19 +20,14 @@ import com.icodeu.bakeryapp.utils.CommonUtils.shortSnackbar
 import com.jakewharton.rxbinding4.widget.textChanges
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.concurrent.TimeUnit
 
 class LoginFragment : Fragment() {
 
     private lateinit var binding: FragmentLoginBinding
     val compositeDisposable = CompositeDisposable()
-    val viewModel: LoginViewModel by viewModels()
-
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        binding = FragmentLoginBinding.inflate(layoutInflater)
-    }
+    val loginViewModel: LoginViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,12 +40,12 @@ class LoginFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        binding = FragmentLoginBinding.inflate(layoutInflater)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         binding.apply {
             Glide.with(requireActivity())
                 .load(R.drawable.baker)
@@ -63,8 +59,32 @@ class LoginFragment : Fragment() {
 
             setupRxBinding()
             setupLoginButton()
+            setupSubscriber()
+            loginViewModel.isLoggedIn()
 
         }
+    }
+
+    private fun setupSubscriber() {
+        loginViewModel.isLoggedIn.observe(viewLifecycleOwner, Observer {
+            if (it) {
+                findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+            }
+        })
+
+        loginViewModel.user.observe(viewLifecycleOwner, Observer {
+            findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+        })
+
+        loginViewModel.loading.observe(viewLifecycleOwner, { isLoading ->
+            (activity as MainActivity).showLoading(isLoading)
+        })
+
+        loginViewModel.error.observe(viewLifecycleOwner, Observer {
+            if (it.isError) {
+                requireView().shortSnackbar(it.errorMessage ?: "Error")
+            }
+        })
     }
 
     private fun setupLoginButton() {
@@ -74,7 +94,7 @@ class LoginFragment : Fragment() {
                 val isNotError = isNotError(emailOutline, passwordoutline)
 
                 if (isNotEmpty && isNotError) {
-                    login(edtEmail.text.toString(),edtPassword.text.toString())
+                    login(edtEmail.text.toString(), edtPassword.text.toString())
                 } else {
                     requireView().shortSnackbar("Error")
                 }
@@ -85,9 +105,11 @@ class LoginFragment : Fragment() {
     private fun setupRxBinding() {
         binding.apply {
             val emailSub = edtEmail.textChanges()
+                .filter { it.isNotEmpty() }
                 .skip(1)
                 .debounce(500, TimeUnit.MILLISECONDS)
             val passwordSub = edtPassword.textChanges()
+                .filter { it.isNotEmpty() }
                 .skip(1)
                 .debounce(500, TimeUnit.MILLISECONDS)
 
@@ -116,11 +138,8 @@ class LoginFragment : Fragment() {
         }
     }
 
-    private fun login(email:String,password:String) {
-//        findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
-        viewModel.login(email,password)?.observe(viewLifecycleOwner, Observer {
-
-        })
+    private fun login(email: String, password: String) {
+        loginViewModel.login(email, password)
     }
 
     override fun onDestroyView() {
