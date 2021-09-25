@@ -6,10 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.icodeu.bakeryapp.MainActivity
 import com.icodeu.bakeryapp.R
 import com.icodeu.bakeryapp.databinding.FragmentRegisterBinding
+import com.icodeu.bakeryapp.ui.dialog.LoadingDialog
 import com.icodeu.bakeryapp.utils.CommonUtils.isNotEmpty
 import com.icodeu.bakeryapp.utils.CommonUtils.isNotError
 import com.icodeu.bakeryapp.utils.CommonUtils.isValidEmail
@@ -19,6 +22,7 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.functions.BiFunction
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.concurrent.TimeUnit
 
 
@@ -26,11 +30,7 @@ class RegisterFragment : Fragment() {
 
     private lateinit var binding: FragmentRegisterBinding
     val compositeDisposable = CompositeDisposable()
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        binding = FragmentRegisterBinding.inflate(layoutInflater)
-    }
+    private val registerViewModel: RegisterViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +43,7 @@ class RegisterFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        binding = FragmentRegisterBinding.inflate(layoutInflater)
         return binding.root
     }
 
@@ -60,8 +61,28 @@ class RegisterFragment : Fragment() {
             }
             setupRxBinding()
             setupRegisterButton()
+            setupSubscriber()
         }
     }
+
+    private fun setupSubscriber() {
+        binding.apply {
+            registerViewModel.loading.observe(viewLifecycleOwner, Observer {
+                (activity as MainActivity).showLoading(it)
+            })
+            registerViewModel.error.observe(viewLifecycleOwner, Observer {
+                if (it.isError) {
+                    requireView().shortSnackbar(it.errorMessage.toString())
+                }
+            })
+            registerViewModel.user.observe(viewLifecycleOwner, {
+                if (it != null) {
+                    findNavController().popBackStack()
+                }
+            })
+        }
+    }
+
 
     private fun setupRegisterButton() {
         binding.apply {
@@ -80,7 +101,12 @@ class RegisterFragment : Fragment() {
                 )
                 if (isNotError && isNotEmpty
                 ) {
-                    findNavController().popBackStack()
+                    register(
+                        edtname.text.toString(),
+                        edtEmail.text.toString(),
+                        edtPassword.text.toString(),
+                        edtRePassword.text.toString()
+                    )
                 } else {
                     requireView().shortSnackbar("Error")
                 }
@@ -88,20 +114,35 @@ class RegisterFragment : Fragment() {
         }
     }
 
+    private fun register(
+        name: String,
+        email: String,
+        password: String,
+        password_confirmation: String
+    ) {
+        registerViewModel.register(
+            name = name,
+            email = email,
+            password = password,
+            password_confirmation = password_confirmation
+        )
+
+    }
+
     private fun setupRxBinding() {
 
         binding.apply {
             val nameSubscriber = edtname.textChanges()
-                .skip(1)
+                .skip(1).filter { it.isNotEmpty() }
                 .debounce(500, TimeUnit.MILLISECONDS)
             val emailSubscriber = edtEmail.textChanges()
-                .skip(1)
+                .skip(1).filter { it.isNotEmpty() }
                 .debounce(500, TimeUnit.MILLISECONDS)
             val passwordSubscriber = edtPassword.textChanges()
-                .skip(1)
+                .skip(1).filter { it.isNotEmpty() }
                 .debounce(500, TimeUnit.MILLISECONDS)
             val passwordReSubscriber = edtRePassword.textChanges()
-                .skip(1)
+                .skip(1).filter { it.isNotEmpty() }
                 .debounce(500, TimeUnit.MILLISECONDS)
 
 
@@ -138,6 +179,9 @@ class RegisterFragment : Fragment() {
                             passwordoutline.error = "Password must be at least 6 characters"
                         } else {
                             passwordoutline.isErrorEnabled = false
+                            if (edtPassword.text.toString() == edtRePassword.text.toString()){
+                                rePasswordoutline.isErrorEnabled = false
+                            }
                         }
                     }
             )
@@ -166,7 +210,7 @@ class RegisterFragment : Fragment() {
                                 rePasswordoutline.error =
                                     "Re-type password must be at least 6 characters\nPassword does not match"
                             } else {
-                                rePasswordoutline.error = "Password does not match"
+                                rePasswordoutline.error = "Re-type password does not match"
                             }
                         } else {
                             rePasswordoutline.isErrorEnabled = false
