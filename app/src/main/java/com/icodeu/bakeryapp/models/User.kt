@@ -9,7 +9,7 @@ data class User(
     @Json(name = "id") @PrimaryKey var id: Int,
     @Json(name = "name") var name: String,
     @Json(name = "email") var email: String,
-    @Json(name = "token") var token: String?=""
+    @Json(name = "token") var token: String=""
 )
 
 data class UserResponse(

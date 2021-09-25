@@ -7,7 +7,10 @@ import com.icodeu.bakeryapp.models.User
 interface UserDao {
 
     @Query("SELECT * FROM user LIMIT 1")
-    suspend fun get():User?
+    suspend fun get(): User
+
+    @Query("SELECT count(*) FROM user")
+    suspend fun getUserCount(): Int
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(user: User)
