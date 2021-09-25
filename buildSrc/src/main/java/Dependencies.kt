@@ -23,6 +23,7 @@ object Versions {
     const val retrofit = "2.9.0"
     const val moshi_kt = "1.11.0"
     const val room_ktx = "2.3.0"
+    const val lup = "0.2.1"
 }
 
 object Dependencies {
@@ -38,6 +39,7 @@ object Dependencies {
         const val navigation_safe_args = "androidx.navigation:navigation-safe-args-gradle-plugin:${Versions.nav_version}"
         const val navigation_dynamic_support = "androidx.navigation:navigation-dynamic-features-fragment:${Versions.nav_version}"
         const val room = "androidx.room:room-runtime:${Versions.room_version}"
+        const val room_rx = "androidx.room:room-rxjava3:${Versions.room_version}"
         const val room_ktx = "androidx.room:room-ktx:${Versions.room_ktx}"
         const val room_compiler = "androidx.room:room-compiler:${Versions.room_version}"
         const val view_pager_2 = "androidx.viewpager2:viewpager2:${Versions.view_pager2}"
@@ -73,6 +75,7 @@ object Dependencies {
     }
 
     object Test {
+        const val lup = "com.github.icodeuDev:Lup:${Versions.lup}"
         const val jUnit = "junit:junit:${Versions.jUnit}"
         const val jUnitExt = "androidx.test.ext:junit:${Versions.jUnitExt}"
         const val espresso = "androidx.test.espresso:espresso-core:${Versions.espresso}"

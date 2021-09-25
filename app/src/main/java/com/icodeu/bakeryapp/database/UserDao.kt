@@ -10,7 +10,7 @@ interface UserDao {
     suspend fun get():User?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun create(user: User)
+    suspend fun insert(user: User)
 
     @Update
     suspend fun update(user: User)
