@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.icodeu.bakeryapp.models.ErrorResponse
 
-abstract class BaseViewModel<Repo>(private val repo: Repo) : ViewModel() {
+abstract class BaseViewModel: ViewModel() {
 
     protected val _loading = MutableLiveData<Boolean>(false)
     val loading: LiveData<Boolean>

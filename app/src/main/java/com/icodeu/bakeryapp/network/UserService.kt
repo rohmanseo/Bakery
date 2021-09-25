@@ -1,11 +1,13 @@
 package com.icodeu.bakeryapp.network
 
+import com.icodeu.bakeryapp.models.LogoutResponse
 import com.icodeu.bakeryapp.models.UserResponse
 import org.koin.java.KoinJavaComponent.inject
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
+import retrofit2.http.Header
 import retrofit2.http.POST
 
 val retrofit: Retrofit by inject(Retrofit::class.java)
@@ -26,4 +28,8 @@ interface UserService {
         @Field("password") password: String,
         @Field("password_confirmation") password_confirmation: String,
     ): Response<UserResponse>
+
+    @POST("auth/logout")
+    suspend fun logout(@Header("Authorization") token: String):Response<LogoutResponse>
+
 }

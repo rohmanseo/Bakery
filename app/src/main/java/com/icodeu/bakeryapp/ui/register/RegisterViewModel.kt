@@ -9,7 +9,7 @@ import com.icodeu.bakeryapp.ui.BaseViewModel
 import kotlinx.coroutines.launch
 
 class RegisterViewModel(private val userRepository: UserRepository) :
-    BaseViewModel<UserRepository>(userRepository) {
+    BaseViewModel() {
 
     private val _user = MutableLiveData<User>()
     val user: LiveData<User>

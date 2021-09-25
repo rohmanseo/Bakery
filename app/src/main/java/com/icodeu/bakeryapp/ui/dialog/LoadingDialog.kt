@@ -25,7 +25,7 @@ class LoadingDialog : DialogFragment() {
     private lateinit var materialDialog: AlertDialog
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
-        materialDialog = MaterialAlertDialogBuilder(requireContext())
+        materialDialog = MaterialAlertDialogBuilder(requireActivity())
             .setView(R.layout.loading_dialog)
             .create()
 

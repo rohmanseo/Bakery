@@ -27,7 +27,20 @@ class UserRemoteDataStore(private val userService: UserService) {
             }
         } catch (e: Exception) {
             e.printStackTrace()
-            throw Exception("Error when getting response")
+            throw Exception(e.message)
+        }
+    }
+
+    suspend fun logout(token: String): Boolean {
+        try {
+            val logoutResponse = userService.logout(token)
+            if (logoutResponse.isSuccessful) {
+                return true
+            } else {
+                throw Exception(logoutResponse.message())
+            }
+        } catch (e: Exception) {
+            throw Exception(e.message)
         }
     }
 
@@ -42,7 +55,7 @@ class UserRemoteDataStore(private val userService: UserService) {
             }
         } catch (e: Exception) {
             e.printStackTrace()
-            throw Exception("Error when getting response")
+            throw Exception(e.message)
         }
     }
 }
