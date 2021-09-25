@@ -1,6 +1,6 @@
 package com.icodeu.bakeryapp.di.modules
 
-import com.icodeu.bakeryapp.network.LoginService
+import com.icodeu.bakeryapp.network.UserService
 import com.icodeu.bakeryapp.network.retrofit
 import com.icodeu.bakeryapp.utils.Constant
 import com.squareup.moshi.Moshi
@@ -22,6 +22,6 @@ val networkModules = module {
             .build()
     }
     single {
-        retrofit.create(LoginService::class.java)
+        retrofit.create(UserService::class.java)
     }
 }

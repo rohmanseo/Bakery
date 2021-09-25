@@ -1,29 +1,38 @@
 package com.icodeu.bakeryapp.repositories
 
-import com.icodeu.bakeryapp.database.AppDatabase
-import com.icodeu.bakeryapp.database.UserDao
-import com.icodeu.bakeryapp.network.LoginService
-import com.icodeu.bakeryapp.ui.login.LoginState
-import com.icodeu.bakeryapp.utils.UIState
-import org.koin.java.KoinJavaComponent.get
-import org.koin.java.KoinJavaComponent.inject
+import com.icodeu.bakeryapp.datastore.user.UserLocalDataStore
+import com.icodeu.bakeryapp.datastore.user.UserRemoteDataStore
+import com.icodeu.bakeryapp.models.User
 
-class UserRepository(val userDao: UserDao) {
+class UserRepository(
+    private val userRemoteDataStore: UserRemoteDataStore,
+    private val userLocalDataStore: UserLocalDataStore
+) {
 
-    suspend fun login(email: String, password: String): LoginState {
-        val loginService: LoginService by inject(LoginService::class.java)
-        val loginResponse = loginService.login(email, password)
-
-        if (loginResponse.isSuccessful) {
-            loginResponse.body()?.let { userDao.create(it.user) }
-            return LoginState(UIState.STATE_SUCCESS, null, loginResponse.body())
-        } else {
-            return LoginState(UIState.STATE_ERROR, loginResponse.message())
+    suspend fun login(email: String, password: String): User? {
+        val user: User? = userRemoteDataStore.login(email, password)
+        if (user != null) {
+            userLocalDataStore.insert(user)
         }
+        return user
+    }
+
+    suspend fun register(
+        name: String,
+        email: String,
+        password: String,
+        password_confirmation: String
+    ): User? {
+        return userRemoteDataStore.register(
+            name = name,
+            email = email,
+            password = password,
+            password_confirmation = password_confirmation
+        )
     }
 
     suspend fun isLoggedIn(): Boolean {
-        val user = userDao.get()
-        return user != null
+        println("is logged in repo: ${userLocalDataStore.getUser()}")
+        return userLocalDataStore.getUser() != null
     }
 }

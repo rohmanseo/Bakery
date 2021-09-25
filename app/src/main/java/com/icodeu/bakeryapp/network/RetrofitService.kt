@@ -1,6 +1,6 @@
 package com.icodeu.bakeryapp.network
 
-import com.icodeu.bakeryapp.models.SuccessResponse
+import com.icodeu.bakeryapp.models.UserResponse
 import org.koin.java.KoinJavaComponent.inject
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -16,5 +16,5 @@ interface LoginService {
     suspend fun login(
         @Field("email") email: String,
         @Field("password") password: String
-    ): Response<SuccessResponse>
+    ): Response<UserResponse>
 }
