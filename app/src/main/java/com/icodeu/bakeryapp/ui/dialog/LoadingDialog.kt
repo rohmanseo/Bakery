@@ -11,6 +11,7 @@ import com.icodeu.bakeryapp.R
 class LoadingDialog : DialogFragment() {
 
     companion object {
+        const val DIALOG_LOADING_TAG = "dialog_loading"
         private var instance: LoadingDialog? = null
         fun getInstance(): LoadingDialog {
             if (instance == null) {

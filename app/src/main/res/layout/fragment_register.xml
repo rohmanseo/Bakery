@@ -128,7 +128,6 @@
 
 
             <Button
-                android:background="@drawable/rounded_shape_primary"
                 android:id="@+id/btnSignUp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
