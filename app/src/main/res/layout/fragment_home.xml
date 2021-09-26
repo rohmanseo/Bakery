@@ -3,11 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-        <variable
-            name="vm"
-            type="com.icodeu.bakeryapp.ui.home.HomeViewModel" />
-    </data>
 
     <ScrollView
         android:layout_width="match_parent"

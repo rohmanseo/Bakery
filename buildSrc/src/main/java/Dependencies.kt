@@ -4,6 +4,7 @@ object Versions {
     const val appCompat = "1.3.1"
     const val kotlin = "1.4.31"
     const val material = "1.4.0"
+    const val test_rules = "1.4.0"
     const val jUnit = "4.+"
     const val jUnitExt = "1.1.3"
     const val espresso = "3.4.0"
