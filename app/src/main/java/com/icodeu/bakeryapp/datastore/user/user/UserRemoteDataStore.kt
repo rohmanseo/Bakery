@@ -1,7 +1,7 @@
-package com.icodeu.bakeryapp.datastore.user
+package com.icodeu.bakeryapp.datastore.user.user
 
 import com.icodeu.bakeryapp.models.User
-import com.icodeu.bakeryapp.network.UserService
+import com.icodeu.bakeryapp.network.services.UserService
 
 
 class UserRemoteDataStore(private val userService: UserService) {

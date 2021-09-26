@@ -29,7 +29,10 @@ class SplashscreenFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         splashScreenViewModel.checkLoggedIn()
+        splashScreenViewModel.getUser()
+
         splashScreenViewModel.isLoggedIn().observe(viewLifecycleOwner, {
             if (it) {
                 findNavController().navigate(R.id.action_splashscreenFragment_to_homeFragment)

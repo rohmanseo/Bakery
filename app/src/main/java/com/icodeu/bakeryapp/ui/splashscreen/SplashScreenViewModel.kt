@@ -16,6 +16,11 @@ class SplashScreenViewModel(private val userRepository: UserRepository) : ViewMo
             _isLoggedIn.value = userRepository.isLoggedIn()
         }
     }
+    fun getUser(){
+        viewModelScope.launch {
+            userRepository.getLoggedInUser()
+        }
+    }
 
     fun isLoggedIn(): LiveData<Boolean> = _isLoggedIn
 }

@@ -11,27 +11,28 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
 import com.icodeu.bakeryapp.MainActivity
 import com.icodeu.bakeryapp.R
 import com.icodeu.bakeryapp.databinding.FragmentHomeBinding
+import com.icodeu.bakeryapp.models.Bread
 import com.icodeu.bakeryapp.models.User
-import com.icodeu.bakeryapp.ui.home.recommended.RecommendAdapter
 import com.icodeu.bakeryapp.ui.home.rv_adapters.CarouselAdapter
+import com.icodeu.bakeryapp.ui.home.rv_adapters.RecommedRVAdapter
 import com.icodeu.bakeryapp.ui.item.ItemFragment
 import com.icodeu.bakeryapp.utils.CommonUtils.shortSnackbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class HomeFragment : Fragment(), CarouselAdapter.Interaction {
+class HomeFragment : Fragment(), CarouselAdapter.Interaction,
+    RecommedRVAdapter.RecommendedItemInterface {
 
     private lateinit var binding: FragmentHomeBinding
     private lateinit var popularAdapter: CarouselAdapter
+    private lateinit var recommendAdapter: RecommedRVAdapter
     private val homeViewModel: HomeViewModel by viewModel()
-    private lateinit var recommendAdapter: RecommendAdapter
     private lateinit var dialog: AlertDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,9 +74,9 @@ class HomeFragment : Fragment(), CarouselAdapter.Interaction {
             }
         })
         homeViewModel.user.observe(viewLifecycleOwner, Observer {
-            if (it == null){
+            if (it == null) {
                 findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
-            }else{
+            } else {
                 binding.tvUserName.setText("Wecome\n${it.name}")
                 setupProfileDialog(it)
             }
@@ -112,20 +113,7 @@ class HomeFragment : Fragment(), CarouselAdapter.Interaction {
             .create()
     }
 
-    private fun setupRecommended() {
-        recommendAdapter = RecommendAdapter(requireActivity())
-        (0..5).forEach {
-            recommendAdapter.createFragment(it)
-        }
-        binding.apply {
 
-            vpRecommended.adapter = recommendAdapter
-            tabLayout.tabMode = TabLayout.MODE_SCROLLABLE
-            TabLayoutMediator(tabLayout, vpRecommended) { tab, position ->
-                tab.text = "Cake Four ye"
-            }.attach()
-        }
-    }
 
 
     private fun setupPopular() {
@@ -144,6 +132,22 @@ class HomeFragment : Fragment(), CarouselAdapter.Interaction {
         }
     }
 
+    private fun setupRecommended() {
+        recommendAdapter = RecommedRVAdapter(this)
+
+        homeViewModel.getRecent()
+        homeViewModel.recent.observe(viewLifecycleOwner, Observer {
+            recommendAdapter.submitList(it)
+        })
+
+        binding.apply {
+            rvRecommended.hasFixedSize()
+            rvRecommended.layoutManager =
+                GridLayoutManager(requireContext(),2)
+            rvRecommended.adapter = recommendAdapter
+        }
+    }
+
     companion object {
 
         @JvmStatic
@@ -155,7 +159,7 @@ class HomeFragment : Fragment(), CarouselAdapter.Interaction {
             }
     }
 
-    override fun onItemSelected(position: Int, item: Cake) {
+    override fun onItemSelected(position: Int, item: Bread) {
         ItemFragment().show(childFragmentManager, "")
     }
 }

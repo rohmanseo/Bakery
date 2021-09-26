@@ -1,9 +1,11 @@
-package com.icodeu.bakeryapp.datastore.user
+package com.icodeu.bakeryapp.datastore.user.user
 
 import com.icodeu.bakeryapp.database.UserDao
 import com.icodeu.bakeryapp.models.User
+import org.koin.java.KoinJavaComponent
 
 class UserLocalDataStore(private val userDao: UserDao) {
+
     suspend fun getUser(): User {
         return userDao.get()
     }

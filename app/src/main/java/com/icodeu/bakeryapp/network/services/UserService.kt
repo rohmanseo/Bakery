@@ -1,16 +1,12 @@
-package com.icodeu.bakeryapp.network
+package com.icodeu.bakeryapp.network.services
 
-import com.icodeu.bakeryapp.models.LogoutResponse
+import com.icodeu.bakeryapp.models.SimpleSuccessResponse
+import com.icodeu.bakeryapp.models.User
 import com.icodeu.bakeryapp.models.UserResponse
-import org.koin.java.KoinJavaComponent.inject
+import retrofit2.Call
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.Header
-import retrofit2.http.POST
+import retrofit2.http.*
 
-val retrofit: Retrofit by inject(Retrofit::class.java)
 
 interface UserService {
     @FormUrlEncoded
@@ -30,6 +26,10 @@ interface UserService {
     ): Response<UserResponse>
 
     @POST("auth/logout")
-    suspend fun logout(@Header("Authorization") token: String):Response<LogoutResponse>
+    suspend fun logout(@Header("Authorization") token: String):Response<SimpleSuccessResponse>
+
+    @GET("auth/refreshToken")
+    fun refreshToken(): Call<User>
+
 
 }
