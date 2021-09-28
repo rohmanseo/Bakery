@@ -39,8 +39,7 @@
                     android:id="@+id/imgAvatar"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:layout_marginRight="16dp"
-                    android:src="@drawable/cute_avatar" />
+                    android:layout_marginEnd="16dp" />
 
                 <TextView
                     android:id="@+id/tvName"
@@ -67,14 +66,14 @@
                 android:background="@color/gray" />
 
             <Button
-                android:textAllCaps="false"
-                android:fontFamily="@font/lato_bold"
                 android:id="@+id/btnLogout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/deviderView"
                 android:layout_marginTop="16dp"
-                android:text="Logout" />
+                android:fontFamily="@font/lato_bold"
+                android:text="Logout"
+                android:textAllCaps="false" />
         </RelativeLayout>
 
     </androidx.cardview.widget.CardView>

@@ -23,7 +23,7 @@ object Versions {
     const val retrofit = "2.9.0"
     const val moshi_kt = "1.11.0"
     const val room_ktx = "2.3.0"
-    const val lup = "0.2.1"
+    const val db_debug = "1.0.6"
 }
 
 object Dependencies {
@@ -45,7 +45,6 @@ object Dependencies {
         const val view_pager_2 = "androidx.viewpager2:viewpager2:${Versions.view_pager2}"
         const val glide = "com.github.bumptech.glide:glide:${Versions.glide}"
         const val glide_annotation = "com.github.bumptech.glide:compiler:${Versions.glide}"
-        const val moshi_kt = "1.11.0"
     }
     object Material {
         const val material = "com.google.android.material:material:${Versions.material}"
@@ -75,7 +74,7 @@ object Dependencies {
     }
 
     object Test {
-        const val lup = "com.github.icodeuDev:Lup:${Versions.lup}"
+        const val db_debug = "com.amitshekhar.android:debug-db:${Versions.db_debug}"
         const val jUnit = "junit:junit:${Versions.jUnit}"
         const val jUnitExt = "androidx.test.ext:junit:${Versions.jUnitExt}"
         const val espresso = "androidx.test.espresso:espresso-core:${Versions.espresso}"

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.icodeu.bakeryapp.R
+import com.icodeu.bakeryapp.ui.ResponseStatus
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -29,12 +30,25 @@ class SplashscreenFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         splashScreenViewModel.checkLoggedIn()
-        splashScreenViewModel.isLoggedIn().observe(viewLifecycleOwner, {
-            if (it) {
-                findNavController().navigate(R.id.action_splashscreenFragment_to_homeFragment)
-            } else {
-                findNavController().navigate(R.id.action_splashscreenFragment_to_loginFragment)
+
+        splashScreenViewModel.isLoggedIn.observe(viewLifecycleOwner, {
+
+            when(it.status){
+                ResponseStatus.STATUS_LOADING -> {
+
+                }
+                ResponseStatus.STATUS_SUCCESS -> {
+                    if (it.data == true){
+                        findNavController().navigate(R.id.action_splashscreenFragment_to_homeFragment)
+                    }else{
+                        findNavController().navigate(R.id.action_splashscreenFragment_to_loginFragment)
+                    }
+                }
+                ResponseStatus.STATUS_ERROR -> {
+
+                }
             }
         })
     }

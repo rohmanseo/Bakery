@@ -1,6 +1,5 @@
 package com.icodeu.bakeryapp.ui.login
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +11,7 @@ import com.bumptech.glide.Glide
 import com.icodeu.bakeryapp.MainActivity
 import com.icodeu.bakeryapp.R
 import com.icodeu.bakeryapp.databinding.FragmentLoginBinding
-import com.icodeu.bakeryapp.ui.dialog.LoadingDialog
+import com.icodeu.bakeryapp.ui.ResponseStatus
 import com.icodeu.bakeryapp.utils.CommonUtils.isNotEmpty
 import com.icodeu.bakeryapp.utils.CommonUtils.isNotError
 import com.icodeu.bakeryapp.utils.CommonUtils.isValidEmail
@@ -60,31 +59,55 @@ class LoginFragment : Fragment() {
             setupRxBinding()
             setupLoginButton()
             setupSubscriber()
-            loginViewModel.isLoggedIn()
 
         }
     }
 
     private fun setupSubscriber() {
         loginViewModel.isLoggedIn.observe(viewLifecycleOwner, Observer {
-            if (it) {
-                findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+            when (it.status) {
+                ResponseStatus.STATUS_LOADING -> {
+                    showLoading(true)
+                }
+                ResponseStatus.STATUS_SUCCESS -> {
+                    if (it.data == true) {
+                        findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+                    }
+                    showLoading(false)
+                }
+                ResponseStatus.STATUS_ERROR -> {
+                    showError(it.error!!)
+                    showLoading(false)
+                }
             }
         })
 
         loginViewModel.user.observe(viewLifecycleOwner, Observer {
-            findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
-        })
-
-        loginViewModel.loading.observe(viewLifecycleOwner, { isLoading ->
-            (activity as MainActivity).showLoading(isLoading)
-        })
-
-        loginViewModel.error.observe(viewLifecycleOwner, Observer {
-            if (it.isError) {
-                requireView().shortSnackbar(it.errorMessage ?: "Error")
+            when (it.status) {
+                ResponseStatus.STATUS_LOADING -> {
+                    showLoading(true)
+                }
+                ResponseStatus.STATUS_SUCCESS -> {
+                    if (it.data != null) {
+                        findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+                    }
+                    showLoading(false)
+                }
+                ResponseStatus.STATUS_ERROR -> {
+                    showError(it.error!!)
+                    showLoading(false)
+                }
             }
         })
+
+    }
+
+    fun showLoading(isLoading: Boolean) {
+        (activity as MainActivity).showLoading(isLoading)
+    }
+
+    fun showError(errorMessage: String) {
+        requireView().shortSnackbar(errorMessage ?: "Error")
     }
 
     private fun setupLoginButton() {

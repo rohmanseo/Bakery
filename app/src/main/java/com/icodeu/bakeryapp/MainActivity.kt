@@ -1,14 +1,12 @@
 package com.icodeu.bakeryapp
 
 import android.os.Bundle
-import android.os.PersistableBundle
-import android.view.View
+import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.icodeu.bakeryapp.databinding.ActivityMainBinding
-import com.icodeu.bakeryapp.ui.dialog.LoadingDialog
-import com.icodeu.bakeryapp.ui.dialog.LoadingDialog.Companion.DIALOG_LOADING_TAG
+import com.icodeu.bakeryapp.utils.getScreenWidthSize
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -20,7 +18,7 @@ class MainActivity : AppCompatActivity() {
         dialog = MaterialAlertDialogBuilder(this)
             .setView(R.layout.loading_dialog)
             .create()
-
+        Log.d("screen width", this.getScreenWidthSize().toString())
         setContentView(binding.root)
     }
 

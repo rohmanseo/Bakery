@@ -5,6 +5,7 @@ import android.view.View
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.icodeu.bakeryapp.models.Bread
 
 object CommonUtils {
     fun String.isValidEmail(): Boolean {
@@ -31,4 +32,5 @@ object CommonUtils {
     fun View.shortSnackbar(message: String) {
         Snackbar.make(this, message, Snackbar.LENGTH_SHORT).show()
     }
+
 }

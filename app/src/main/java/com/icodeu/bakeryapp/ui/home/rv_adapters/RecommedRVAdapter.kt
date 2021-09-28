@@ -11,18 +11,18 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.icodeu.bakeryapp.R
-import com.icodeu.bakeryapp.ui.home.Cake
+import com.icodeu.bakeryapp.models.Bread
 
-class RecommedRVAdapter(private val interaction: Interaction? = null) :
+class RecommedRVAdapter(private val interaction: RecommendedItemInterface? = null) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Cake>() {
+    val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Bread>() {
 
-        override fun areItemsTheSame(oldItem: Cake, newItem: Cake): Boolean {
+        override fun areItemsTheSame(oldItem: Bread, newItem: Bread): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: Cake, newItem: Cake): Boolean {
+        override fun areContentsTheSame(oldItem: Bread, newItem: Bread): Boolean {
             return oldItem == newItem
         }
 
@@ -54,17 +54,17 @@ class RecommedRVAdapter(private val interaction: Interaction? = null) :
         return differ.currentList.size
     }
 
-    fun submitList(list: List<Cake>) {
+    fun submitList(list: List<Bread>) {
         differ.submitList(list)
     }
 
     class ViewHolder
     constructor(
         itemView: View,
-        private val interaction: Interaction?
+        private val interaction: RecommendedItemInterface?
     ) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(item: Cake) = with(itemView) {
+        fun bind(item: Bread) = with(itemView) {
             itemView.setOnClickListener {
                 interaction?.onItemSelected(adapterPosition, item)
             }
@@ -74,14 +74,17 @@ class RecommedRVAdapter(private val interaction: Interaction? = null) :
             val price = this.findViewById(R.id.tvPrice) as TextView
 
             name.setText(item.name)
+            rating.rating = item.rating?.toFloat() ?: 1F
+            val priceString = item.shortPrice().toString() + "K"
+            price.text = priceString
             Glide.with(itemView.context)
-                .load(R.drawable.cinnamon)
+                .load(item.validImage())
                 .into(img)
 
         }
     }
 
-    interface Interaction {
-        fun onItemSelected(position: Int, item: Cake)
+    interface RecommendedItemInterface {
+        fun onItemSelected(position: Int, item: Bread)
     }
 }
