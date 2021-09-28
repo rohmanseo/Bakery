@@ -4,6 +4,9 @@ import com.icodeu.bakeryapp.datastore.user.user.TokenHolder
 import com.icodeu.bakeryapp.datastore.user.user.UserLocalDataStore
 import com.icodeu.bakeryapp.datastore.user.user.UserRemoteDataStore
 import com.icodeu.bakeryapp.models.User
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 
 class UserRepository(
     private val userRemoteDataStore: UserRemoteDataStore,
@@ -38,23 +41,22 @@ class UserRepository(
         )
     }
 
-    suspend fun getLoggedInUser(): User {
-        val user = userLocalDataStore.getUser()
-        tokenHolder.token = user.token
-        return user
+    fun getLoggedInUser(): Flow<User?> {
+        return userLocalDataStore.getUser().onEach {
+            if (it !=null){
+                tokenHolder.token = it.token
+            }
+        }
     }
 
     suspend fun logout(): Boolean {
-        val user = userLocalDataStore.getUser()
-        val response = userRemoteDataStore.logout("Bearer ${user.token}")
-        if (response) {
-            userLocalDataStore.delete(user)
-            tokenHolder.token = null
-        }
-        return response
+        userRemoteDataStore.logout()
+        userLocalDataStore.delete()
+        tokenHolder.token = null
+        return true
     }
 
-    suspend fun isLoggedIn(): Boolean {
-        return userLocalDataStore.getUserCount() != 0
+    fun isLoggedIn(): Flow<Boolean> {
+        return userLocalDataStore.getUserCount().map { it!=0 }
     }
 }

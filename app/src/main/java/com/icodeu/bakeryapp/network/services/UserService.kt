@@ -26,7 +26,7 @@ interface UserService {
     ): Response<UserResponse>
 
     @POST("auth/logout")
-    suspend fun logout(@Header("Authorization") token: String):Response<SimpleSuccessResponse>
+    suspend fun logout():Response<SimpleSuccessResponse>
 
     @GET("auth/refreshToken")
     fun refreshToken(): Call<User>

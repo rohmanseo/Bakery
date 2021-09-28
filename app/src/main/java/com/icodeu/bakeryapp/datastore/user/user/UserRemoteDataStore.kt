@@ -31,9 +31,9 @@ class UserRemoteDataStore(private val userService: UserService) {
         }
     }
 
-    suspend fun logout(token: String): Boolean {
+    suspend fun logout(): Boolean {
         try {
-            val logoutResponse = userService.logout(token)
+            val logoutResponse = userService.logout()
             if (logoutResponse.isSuccessful) {
                 return true
             } else {

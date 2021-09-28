@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.icodeu.bakeryapp.MainActivity
 import com.icodeu.bakeryapp.R
 import com.icodeu.bakeryapp.databinding.FragmentRegisterBinding
+import com.icodeu.bakeryapp.ui.ResponseStatus
 import com.icodeu.bakeryapp.ui.dialog.LoadingDialog
 import com.icodeu.bakeryapp.utils.CommonUtils.isNotEmpty
 import com.icodeu.bakeryapp.utils.CommonUtils.isNotError
@@ -67,22 +68,33 @@ class RegisterFragment : Fragment() {
 
     private fun setupSubscriber() {
         binding.apply {
-            registerViewModel.loading.observe(viewLifecycleOwner, Observer {
-                (activity as MainActivity).showLoading(it)
-            })
-            registerViewModel.error.observe(viewLifecycleOwner, Observer {
-                if (it.isError) {
-                    requireView().shortSnackbar(it.errorMessage.toString())
-                }
-            })
-            registerViewModel.user.observe(viewLifecycleOwner, {
-                if (it != null) {
-                    findNavController().popBackStack()
+
+            registerViewModel.user.observe(viewLifecycleOwner, Observer {
+                when (it.status) {
+                    ResponseStatus.STATUS_LOADING -> {
+                        showLoading(true)
+                    }
+                    ResponseStatus.STATUS_SUCCESS -> {
+                        if (it.data != null) {
+                            findNavController().popBackStack()
+                        }
+                        showLoading(false)
+                    }
+                    ResponseStatus.STATUS_ERROR -> {
+                        showError(it.error?:"")
+                        showLoading(false)
+                    }
                 }
             })
         }
     }
+    fun showLoading(isLoading: Boolean) {
+        (activity as MainActivity).showLoading(isLoading)
+    }
 
+    fun showError(errorMessage: String) {
+        requireView().shortSnackbar(errorMessage ?: "Error")
+    }
 
     private fun setupRegisterButton() {
         binding.apply {

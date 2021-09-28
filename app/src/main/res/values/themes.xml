@@ -19,6 +19,7 @@
     <style name="RatingBarTheme" parent="Widget.AppCompat.RatingBar.Small">
         <item name="colorControlNormal">@color/gray</item>
         <item name="colorControlActivated">@color/yellow</item>
+
     </style>
     <style name="TabLayoutTheme" parent="@android:style/TextAppearance.Widget.TabWidget">
         <item name="fontFamily">@font/lato_bold</item>

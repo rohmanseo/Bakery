@@ -45,7 +45,6 @@ object Dependencies {
         const val view_pager_2 = "androidx.viewpager2:viewpager2:${Versions.view_pager2}"
         const val glide = "com.github.bumptech.glide:glide:${Versions.glide}"
         const val glide_annotation = "com.github.bumptech.glide:compiler:${Versions.glide}"
-        const val moshi_kt = "1.11.0"
     }
     object Material {
         const val material = "com.google.android.material:material:${Versions.material}"

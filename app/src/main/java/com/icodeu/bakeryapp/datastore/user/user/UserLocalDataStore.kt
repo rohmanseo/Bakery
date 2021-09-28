@@ -2,24 +2,27 @@ package com.icodeu.bakeryapp.datastore.user.user
 
 import com.icodeu.bakeryapp.database.UserDao
 import com.icodeu.bakeryapp.models.User
-import org.koin.java.KoinJavaComponent
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 
 class UserLocalDataStore(private val userDao: UserDao) {
 
-    suspend fun getUser(): User {
-        return userDao.get()
+    fun getUser(): Flow<User?> {
+        return userDao.get().flowOn(Dispatchers.IO)
     }
 
-    suspend fun insert(user: User): Boolean {
+    suspend fun insert(user: User): Flow<Boolean> {
         userDao.insert(user)
-        return getUserCount() != 0
+        return getUserCount().map { it != 0 }.flowOn(Dispatchers.IO)
     }
 
-    suspend fun getUserCount(): Int {
-        return userDao.getUserCount()
+    fun getUserCount(): Flow<Int> {
+        return userDao.getUserCount().flowOn(Dispatchers.IO)
     }
 
-    suspend fun delete(user: User) {
-        userDao.delete(user)
+    suspend fun delete() {
+        userDao.delete()
     }
 }

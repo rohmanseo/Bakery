@@ -12,10 +12,11 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:focusable="true"
-            android:focusableInTouchMode="true"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:orientation="vertical"
             android:paddingLeft="16dp"
             android:paddingRight="16dp">
@@ -41,20 +42,20 @@
                     app:cardCornerRadius="10dp">
 
                     <ImageView
+                        android:scaleType="centerCrop"
                         android:id="@+id/imgAvatar"
                         android:layout_width="50sp"
-                        android:layout_height="50sp"
-                        android:src="@drawable/cute_avatar" />
+                        android:layout_height="50sp" />
                 </androidx.cardview.widget.CardView>
 
             </RelativeLayout>
 
             <androidx.appcompat.widget.SearchView
                 android:id="@+id/svMain"
-                android:focusable="false"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/rounded_shape_gray"
+                android:focusable="false"
                 app:iconifiedByDefault="false"
                 app:queryBackground="@color/transparent"
                 app:queryHint="Search want to buy" />
@@ -92,11 +93,12 @@
                     android:text="Recommend for you"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/black" />
+
                 <TextView
                     android:id="@+id/tvViewAll"
-                    android:layout_alignParentEnd="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="16dp"
                     android:fontFamily="@font/lato_bold"
@@ -105,32 +107,21 @@
                     android:textColor="@color/primary" />
             </RelativeLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvRecommended"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false"
-                android:orientation="vertical"
-                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                app:spanCount="2"
-                tools:listitem="@layout/item_carousel" />
+                android:layout_height="match_parent">
 
- <!--           <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/tab_layout"
-                    android:layout_width="match_parent"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvRecommended"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:scrollbarAlwaysDrawHorizontalTrack="true" />
-
-                <androidx.viewpager2.widget.ViewPager2
-                    android:id="@+id/vpRecommended"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </LinearLayout>-->
+                    android:layout_centerHorizontal="true"
+                    android:nestedScrollingEnabled="false"
+                    android:orientation="vertical"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:spanCount="3"
+                    tools:listitem="@layout/item_carousel_recommended" />
+            </RelativeLayout>
         </LinearLayout>
     </ScrollView>
 </layout>

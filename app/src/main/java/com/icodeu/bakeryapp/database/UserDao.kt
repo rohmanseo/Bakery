@@ -2,15 +2,16 @@ package com.icodeu.bakeryapp.database
 
 import androidx.room.*
 import com.icodeu.bakeryapp.models.User
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface UserDao {
 
     @Query("SELECT * FROM user LIMIT 1")
-    suspend fun get(): User
+    fun get(): Flow<User?>
 
     @Query("SELECT count(*) FROM user")
-    suspend fun getUserCount(): Int
+    fun getUserCount(): Flow<Int>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(user: User)
@@ -18,6 +19,6 @@ interface UserDao {
     @Update
     suspend fun update(user: User)
 
-    @Delete
-    suspend fun delete(user: User)
+    @Query("DELETE FROM `user`")
+    suspend fun delete()
 }

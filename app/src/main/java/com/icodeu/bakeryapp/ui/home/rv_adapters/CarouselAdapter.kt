@@ -69,14 +69,14 @@ class CarouselAdapter(private val interaction: Interaction? = null) :
                 interaction?.onItemSelected(adapterPosition, item)
             }
             val img = this.findViewById(R.id.imgCarousel) as ImageView
-            val name = this.findViewById(R.id.tvName) as TextView
+/*            val name = this.findViewById(R.id.tvName) as TextView
             val rating = this.findViewById(R.id.ratingItem) as RatingBar
             val price = this.findViewById(R.id.tvPrice) as TextView
 
             name.setText(item.name)
             rating.rating = item.rating?.toFloat() ?: 1F
             val priceString = item.shortPrice().toString() + "K"
-            price.text = priceString
+            price.text = priceString*/
             Glide.with(itemView.context)
                 .load(item.validImage())
                 .into(img)

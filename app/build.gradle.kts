@@ -66,6 +66,7 @@ dependencies {
 
     implementation(Dependencies.Reactivex.rx_android_3)
     implementation(Dependencies.Reactivex.rx_java_3)
+    implementation(Dependencies.AndroidX.room_rx)
     implementation(Dependencies.Reactivex.androidx_binding)
 
     implementation(Dependencies.Networking.retrofit)
