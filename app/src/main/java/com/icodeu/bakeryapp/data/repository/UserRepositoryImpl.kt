@@ -2,12 +2,12 @@ package com.icodeu.bakeryapp.data.repository
 
 import com.icodeu.bakeryapp.data.local.user.TokenHolder
 import com.icodeu.bakeryapp.data.local.user.UserLocalDataStore
-import com.icodeu.bakeryapp.data.remote.user.UserRemoteDataStore
+import com.icodeu.bakeryapp.data.remote.user.UserRemoteDataSource
 import com.icodeu.bakeryapp.domain.model.User
 import com.icodeu.bakeryapp.domain.repository.UserRepository
 
 class UserRepositoryImpl(
-    private val userRemoteDataStore: UserRemoteDataStore,
+    private val userRemoteDataStore: UserRemoteDataSource,
     private val userLocalDataStore: UserLocalDataStore
 ) : UserRepository {
     private val tokenHolder = TokenHolder()
