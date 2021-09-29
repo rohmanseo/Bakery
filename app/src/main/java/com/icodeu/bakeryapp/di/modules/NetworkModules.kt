@@ -1,9 +1,9 @@
 package com.icodeu.bakeryapp.di.modules
 
-import android.util.Log
-import com.icodeu.bakeryapp.network.services.BreadService
-import com.icodeu.bakeryapp.network.services.UserService
-import com.icodeu.bakeryapp.repositories.UserRepository
+import com.icodeu.bakeryapp.data.remote.services.BreadService
+import com.icodeu.bakeryapp.data.remote.services.UserService
+import com.icodeu.bakeryapp.data.repository.UserRepositoryImpl
+import com.icodeu.bakeryapp.domain.repository.UserRepository
 import com.icodeu.bakeryapp.utils.Constant
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory

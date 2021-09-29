@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.icodeu.bakeryapp.ui.home.HomeFragment"
+        android:name="com.icodeu.bakeryapp.presentation.home.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home">
         <action
@@ -19,7 +19,7 @@
     <fragment
         tools:layout="@layout/fragment_login"
         android:id="@+id/loginFragment"
-        android:name="com.icodeu.bakeryapp.ui.login.LoginFragment"
+        android:name="com.icodeu.bakeryapp.presentation.login.LoginFragment"
         android:label="LoginFragment" >
         <action
             android:id="@+id/action_loginFragment_to_registerFragment"
@@ -39,11 +39,11 @@
     <fragment
         tools:layout="@layout/fragment_register"
         android:id="@+id/registerFragment"
-        android:name="com.icodeu.bakeryapp.ui.register.RegisterFragment"
+        android:name="com.icodeu.bakeryapp.presentation.register.RegisterFragment"
         android:label="RegisterFragment" />
     <fragment
         android:id="@+id/splashscreenFragment"
-        android:name="com.icodeu.bakeryapp.ui.splashscreen.SplashscreenFragment"
+        android:name="com.icodeu.bakeryapp.presentation.splashscreen.SplashscreenFragment"
         android:label="fragment_splashscreen"
         tools:layout="@layout/fragment_splashscreen" >
         <action

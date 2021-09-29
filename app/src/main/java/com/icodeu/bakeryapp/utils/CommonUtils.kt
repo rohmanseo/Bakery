@@ -5,7 +5,7 @@ import android.view.View
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import com.icodeu.bakeryapp.models.Bread
+import com.icodeu.bakeryapp.utils.Constant.BASE_URL
 
 object CommonUtils {
     fun String.isValidEmail(): Boolean {
@@ -31,6 +31,11 @@ object CommonUtils {
 
     fun View.shortSnackbar(message: String) {
         Snackbar.make(this, message, Snackbar.LENGTH_SHORT).show()
+    }
+
+    fun isConnected(): Boolean {
+        val command = "ping -c 1 $BASE_URL"
+        return Runtime.getRuntime().exec(command).waitFor() == 0
     }
 
 }
