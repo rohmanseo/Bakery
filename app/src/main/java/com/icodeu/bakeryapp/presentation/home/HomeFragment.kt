@@ -1,4 +1,4 @@
-package com.icodeu.bakeryapp.ui.home
+package com.icodeu.bakeryapp.presentation.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -21,13 +21,14 @@ import com.icodeu.bakeryapp.R
 import com.icodeu.bakeryapp.databinding.FragmentHomeBinding
 import com.icodeu.bakeryapp.domain.model.Bread
 import com.icodeu.bakeryapp.domain.model.User
-import com.icodeu.bakeryapp.ui.ResponseStatus.STATUS_ERROR
-import com.icodeu.bakeryapp.ui.ResponseStatus.STATUS_LOADING
-import com.icodeu.bakeryapp.ui.ResponseStatus.STATUS_SUCCESS
-import com.icodeu.bakeryapp.ui.home.rv_adapters.CarouselAdapter
-import com.icodeu.bakeryapp.ui.home.rv_adapters.RecommedRVAdapter
-import com.icodeu.bakeryapp.ui.item.ItemFragment
+import com.icodeu.bakeryapp.presentation.ResponseStatus.STATUS_ERROR
+import com.icodeu.bakeryapp.presentation.ResponseStatus.STATUS_LOADING
+import com.icodeu.bakeryapp.presentation.ResponseStatus.STATUS_SUCCESS
+import com.icodeu.bakeryapp.presentation.home.rv_adapters.CarouselAdapter
+import com.icodeu.bakeryapp.presentation.home.rv_adapters.RecommedRVAdapter
+import com.icodeu.bakeryapp.presentation.item.ItemFragment
 import com.icodeu.bakeryapp.utils.CommonUtils.shortSnackbar
+import com.icodeu.bakeryapp.utils.Resource
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment(), CarouselAdapter.Interaction,
@@ -56,7 +57,6 @@ class HomeFragment : Fragment(), CarouselAdapter.Interaction,
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        homeViewModel.getLoggedInUser()
         setupAvatar()
         setupProfileDialog()
         setupPopular()
@@ -75,25 +75,38 @@ class HomeFragment : Fragment(), CarouselAdapter.Interaction,
 
     private fun setupSubscriber() {
         homeViewModel.user.observe(viewLifecycleOwner, {
-            when (it.status) {
-                STATUS_LOADING -> {
+            when (it) {
+                is Resource.Loading -> {
                     showLoading(true)
                 }
-                STATUS_SUCCESS -> {
+               is Resource.Success -> {
                     if (it.data == null) {
                         findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
                     } else {
-                        it.data?.let { user ->
+                        it.data.let { user ->
                             binding.tvUserName.setText("Wecome\n${user.name}")
-
                         }
                         setupProfileDialog(it.data)
                     }
                     showLoading(false)
                 }
-                STATUS_ERROR -> {
+                is Resource.Error -> {
                     it.error?.let { it1 -> showError(it1) }
                     showLoading(false)
+                }
+            }
+        })
+
+        homeViewModel.logout.observe(viewLifecycleOwner,{
+            when(it) {
+                is Resource.Loading -> {
+                    showLoading(true)
+                }
+                is Resource.Success -> {
+                    findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
+                }
+                is Resource.Error -> {
+                    it.error?.let { it1 -> showError(it1) }
                 }
             }
         })
@@ -143,17 +156,16 @@ class HomeFragment : Fragment(), CarouselAdapter.Interaction,
 
     private fun setupPopular() {
         popularAdapter = CarouselAdapter(this)
-
         homeViewModel.getPopular()
         homeViewModel.popular.observe(viewLifecycleOwner, Observer {
-            when (it.status) {
-                STATUS_LOADING -> {
+            when (it) {
+                is Resource.Loading -> {
                     showLoading(true)
                 }
-                STATUS_SUCCESS -> {
+                is Resource.Success -> {
                     it.data?.let { popular -> popularAdapter.submitList(popular) }
                 }
-                STATUS_ERROR -> {
+                is Resource.Error -> {
                     it.error?.let { message -> showError(message) }
                 }
             }
@@ -173,14 +185,14 @@ class HomeFragment : Fragment(), CarouselAdapter.Interaction,
         homeViewModel.getRecent()
         homeViewModel.recent.observe(viewLifecycleOwner, Observer {
             println("Recent items ${it}")
-            when (it.status) {
-                STATUS_LOADING -> {
+            when (it) {
+                is Resource.Loading -> {
                     showLoading(true)
                 }
-                STATUS_SUCCESS -> {
+                is Resource.Success -> {
                     it.data?.let { recent -> recommendAdapter.submitList(recent) }
                 }
-                STATUS_ERROR -> {
+                is Resource.Error -> {
                     it.error?.let { message -> showError(message) }
                 }
             }

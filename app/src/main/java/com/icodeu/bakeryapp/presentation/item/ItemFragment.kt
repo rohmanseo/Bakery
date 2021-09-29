@@ -1,11 +1,7 @@
-package com.icodeu.bakeryapp.ui.item
+package com.icodeu.bakeryapp.presentation.item
 
 import android.app.Dialog
-import android.content.DialogInterface
-import android.content.DialogInterface.OnShowListener
-import android.content.res.Resources
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,10 +10,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.icodeu.bakeryapp.R
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 
-import android.widget.FrameLayout
-
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import java.lang.reflect.TypeVariable
 
 
 class ItemFragment : BottomSheetDialogFragment() {

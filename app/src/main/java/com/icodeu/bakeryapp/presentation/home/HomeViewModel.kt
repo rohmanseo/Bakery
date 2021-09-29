@@ -1,4 +1,4 @@
-package com.icodeu.bakeryapp.ui.home
+package com.icodeu.bakeryapp.presentation.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -6,40 +6,45 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.icodeu.bakeryapp.domain.model.Bread
 import com.icodeu.bakeryapp.domain.model.User
-import com.icodeu.bakeryapp.data.repository.BreadRepository
-import com.icodeu.bakeryapp.data.repository.UserRepository
-import com.icodeu.bakeryapp.ui.ResponseData
-import com.icodeu.bakeryapp.ui.ResponseStatus
-import com.icodeu.bakeryapp.ui.ResponseStatus.STATUS_LOADING
-import com.icodeu.bakeryapp.ui.ResponseStatus.STATUS_SUCCESS
+import com.icodeu.bakeryapp.domain.use_case.bread.GetPopularBreadUseCase
+import com.icodeu.bakeryapp.domain.use_case.bread.GetRecentBreadUseCase
+import com.icodeu.bakeryapp.domain.use_case.user.GetUserUseCase
+import com.icodeu.bakeryapp.domain.use_case.user.LogoutUseCase
+import com.icodeu.bakeryapp.presentation.ResponseStatus
+import com.icodeu.bakeryapp.presentation.ResponseStatus.STATUS_LOADING
+import com.icodeu.bakeryapp.presentation.ResponseStatus.STATUS_SUCCESS
+import com.icodeu.bakeryapp.utils.Resource
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
-    private val userRepository: UserRepository,
-    private val breadRepository: BreadRepository
+    private val getLoggedInUseCase: GetUserUseCase,
+    private val getPopularBreadUseCase: GetPopularBreadUseCase,
+    private val getRecentBreadUseCase: GetRecentBreadUseCase,
+    private val logoutUseCase: LogoutUseCase
 ) : ViewModel() {
 
-    private var _user = MutableLiveData<ResponseData<User>>(ResponseData())
-    val user: LiveData<ResponseData<User>>
+    private var _user = MutableLiveData<Resource<User>>(Resource.Idle())
+    val user: LiveData<Resource<User>>
         get() = _user
-    private val _popular = MutableLiveData<ResponseData<List<Bread>>>(ResponseData())
-    val popular: LiveData<ResponseData<List<Bread>>>
+    private var _logout = MutableLiveData<Resource<Boolean>>(Resource.Idle())
+    val logout: LiveData<Resource<Boolean>>
+        get() = _logout
+    private val _popular = MutableLiveData<Resource<List<Bread>>>(Resource.Idle())
+    val popular: LiveData<Resource<List<Bread>>>
         get() = _popular
-    private val _recent = MutableLiveData<ResponseData<List<Bread>>>(ResponseData())
-    val recent: LiveData<ResponseData<List<Bread>>>
+    private val _recent = MutableLiveData<Resource<List<Bread>>>(Resource.Idle())
+    val recent: LiveData<Resource<List<Bread>>>
         get() = _recent
 
+    init {
+        getLoggedInUser()
+    }
 
     fun getPopular() {
         viewModelScope.launch {
-            _popular.value = _popular.value?.copy(STATUS_LOADING)
-            try {
-                breadRepository.getPopular().collect {
-                    _popular.value = _popular.value?.copy(STATUS_SUCCESS, null, it)
-                }
-            } catch (e: Exception) {
-                _popular.value = _popular.value?.copy(ResponseStatus.STATUS_ERROR, e.message)
+            getPopularBreadUseCase().collect {
+                _popular.value = it
             }
         }
     }
@@ -47,40 +52,27 @@ class HomeViewModel(
 
     fun getRecent() {
         viewModelScope.launch {
-            _recent.value = _recent.value?.copy(STATUS_LOADING)
-            try {
-                breadRepository.getRecent().collect {
-                    _recent.value = _recent.value?.copy(STATUS_SUCCESS, null, it)
-                }
-            } catch (e: Exception) {
-                _recent.value = _recent.value?.copy(ResponseStatus.STATUS_ERROR, e.message)
+            getRecentBreadUseCase().collect {
+                _recent.value = it
             }
         }
     }
 
     fun logout() {
         viewModelScope.launch {
-            _user.value = _user.value?.copy(ResponseStatus.STATUS_LOADING, null, null)
-            try {
-                userRepository.logout()
-                _user.value = _user.value?.copy(STATUS_SUCCESS, null, null)
-            } catch (e: Exception) {
-                _user.value = _user.value?.copy(ResponseStatus.STATUS_ERROR, e.message, null)
+            logoutUseCase().collect {
+                _logout.value = it
             }
         }
     }
 
     fun getLoggedInUser() {
         viewModelScope.launch {
-            _user.value = _user.value?.copy(ResponseStatus.STATUS_LOADING, null, null)
-            try {
-                userRepository.getLoggedInUser().collect {
-                    _user.value = _user.value?.copy(STATUS_SUCCESS, null, it)
-                }
-            } catch (e: Exception) {
-                _user.value = _user.value?.copy(ResponseStatus.STATUS_ERROR, e.message, null)
+            getLoggedInUseCase().collect {
+                _user.value = it
             }
-        }
-    }
 
+        }
+
+    }
 }

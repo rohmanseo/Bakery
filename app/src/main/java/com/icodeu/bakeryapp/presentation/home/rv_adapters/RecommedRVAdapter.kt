@@ -1,4 +1,4 @@
-package com.icodeu.bakeryapp.ui.home.rv_adapters
+package com.icodeu.bakeryapp.presentation.home.rv_adapters
 
 import android.view.LayoutInflater
 import android.view.View

@@ -1,8 +1,8 @@
-package com.icodeu.bakeryapp.network.services
+package com.icodeu.bakeryapp.data.remote.services
 
-import com.icodeu.bakeryapp.models.SimpleSuccessResponse
-import com.icodeu.bakeryapp.models.User
-import com.icodeu.bakeryapp.models.UserResponse
+import com.icodeu.bakeryapp.domain.model.SimpleSuccessResponse
+import com.icodeu.bakeryapp.domain.model.User
+import com.icodeu.bakeryapp.domain.model.UserResponse
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*

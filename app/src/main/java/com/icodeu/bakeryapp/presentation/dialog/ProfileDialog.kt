@@ -1,8 +1,7 @@
-package com.icodeu.bakeryapp.ui.dialog
+package com.icodeu.bakeryapp.presentation.dialog
 
 import android.app.Dialog
 import android.os.Bundle
-import android.view.View
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.icodeu.bakeryapp.databinding.DialogProfileBinding

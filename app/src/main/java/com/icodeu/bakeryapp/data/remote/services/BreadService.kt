@@ -1,9 +1,8 @@
-package com.icodeu.bakeryapp.network.services
+package com.icodeu.bakeryapp.data.remote.services
 
-import com.icodeu.bakeryapp.models.BreadResponse
+import com.icodeu.bakeryapp.domain.model.BreadResponse
 import retrofit2.Response
 import retrofit2.http.GET
-import retrofit2.http.Header
 
 interface BreadService {
 

@@ -1,25 +1,27 @@
-package com.icodeu.bakeryapp.ui.login
+package com.icodeu.bakeryapp.presentation.login
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.icodeu.bakeryapp.domain.model.User
-import com.icodeu.bakeryapp.data.repository.UserRepository
-import com.icodeu.bakeryapp.ui.ResponseData
-import com.icodeu.bakeryapp.ui.ResponseStatus.STATUS_ERROR
-import com.icodeu.bakeryapp.ui.ResponseStatus.STATUS_LOADING
-import com.icodeu.bakeryapp.ui.ResponseStatus.STATUS_SUCCESS
+import com.icodeu.bakeryapp.domain.use_case.user.IsLoggedInUseCase
+import com.icodeu.bakeryapp.domain.use_case.user.LoginUseCase
+import com.icodeu.bakeryapp.utils.Resource
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class LoginViewModel(val userRepository: UserRepository) : ViewModel() {
+class LoginViewModel(
+    private val isLoggedInUseCase: IsLoggedInUseCase,
+    private val loginUserUseCase: LoginUseCase
+) : ViewModel() {
 
-    private var _user = MutableLiveData<ResponseData<User>>(ResponseData())
-    val user: LiveData<ResponseData<User>>
+    private var _user = MutableLiveData<Resource<User>>(Resource.Idle())
+    val user: LiveData<Resource<User>>
         get() = _user
-    private var _isLoggedIn = MutableLiveData<ResponseData<Boolean>>(ResponseData())
-    val isLoggedIn: LiveData<ResponseData<Boolean>>
+    private val _isLoggedIn =
+        MutableLiveData<Resource<Boolean>>(Resource.Idle())
+    val isLoggedIn: LiveData<Resource<Boolean>>
         get() = _isLoggedIn
 
     init {
@@ -28,26 +30,16 @@ class LoginViewModel(val userRepository: UserRepository) : ViewModel() {
 
     fun login(email: String, password: String) {
         viewModelScope.launch {
-            _user.value = _user.value?.copy(STATUS_LOADING, null, null)
-            try {
-                val user = userRepository.login(email, password)
-                _user.value = _user.value?.copy(STATUS_SUCCESS, null, user)
-            } catch (e: Exception) {
-                _user.value = _user.value?.copy(STATUS_ERROR, e.message, null)
+            loginUserUseCase(email, password).collect {
+                _user.value = it
             }
         }
     }
 
     fun isLoggedIn() {
         viewModelScope.launch {
-            _isLoggedIn.value = _isLoggedIn.value?.copy(STATUS_LOADING, null, null)
-            try {
-                userRepository.isLoggedIn()
-                    .collect {
-                        _isLoggedIn.value = _isLoggedIn.value?.copy(STATUS_SUCCESS, null, it)
-                    }
-            } catch (e: Exception) {
-                _isLoggedIn.value = _isLoggedIn.value?.copy(STATUS_ERROR, e.message, null)
+            isLoggedInUseCase().collect {
+                _isLoggedIn.value = it
             }
         }
     }

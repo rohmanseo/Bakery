@@ -1,4 +1,4 @@
-package com.icodeu.bakeryapp.ui.login
+package com.icodeu.bakeryapp.presentation.login
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,7 +11,7 @@ import com.bumptech.glide.Glide
 import com.icodeu.bakeryapp.MainActivity
 import com.icodeu.bakeryapp.R
 import com.icodeu.bakeryapp.databinding.FragmentLoginBinding
-import com.icodeu.bakeryapp.ui.ResponseStatus
+import com.icodeu.bakeryapp.presentation.ResponseStatus
 import com.icodeu.bakeryapp.utils.CommonUtils.isNotEmpty
 import com.icodeu.bakeryapp.utils.CommonUtils.isNotError
 import com.icodeu.bakeryapp.utils.CommonUtils.isValidEmail

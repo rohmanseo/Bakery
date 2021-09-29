@@ -1,4 +1,4 @@
-package com.icodeu.bakeryapp.ui.dialog
+package com.icodeu.bakeryapp.presentation.dialog
 
 
 import android.app.Dialog
