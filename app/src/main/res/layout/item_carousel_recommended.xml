@@ -2,7 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cardItem"
-    android:layout_width="100dp"
+    android:layout_width="150dp"
     android:layout_height="wrap_content"
     android:elevation="0dp"
     android:layout_margin="8dp"
@@ -15,7 +15,7 @@
 
         <ImageView
             android:id="@+id/imgCarousel"
-            android:layout_width="130dp"
+            android:layout_width="150dp"
             android:layout_height="100dp"
             android:scaleType="centerCrop" />
 
@@ -43,10 +43,10 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="8dp"
                 android:text="Cinnamon"
-                android:textSize="14sp"/>
+                android:textSize="16sp"/>
 
             <TextView
-                android:textSize="12dp"
+                android:textSize="14sp"
                 android:id="@+id/tvPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

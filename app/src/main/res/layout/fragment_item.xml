@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/black"
-        tools:context=".ui.item.ItemFragment">
+        tools:context=".presentation.item.ItemFragment">
 
         <ImageView
             android:id="@+id/imgBuild"

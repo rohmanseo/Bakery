@@ -1,9 +1,7 @@
 package com.icodeu.bakeryapp.di.modules
 
 import androidx.room.Room
-import com.icodeu.bakeryapp.database.AppDatabase
-import com.icodeu.bakeryapp.database.UserDao
-import org.koin.android.ext.koin.androidContext
+import com.icodeu.bakeryapp.data.local.AppDatabase
 import org.koin.dsl.module
 
 val databaseModules = module {
