@@ -89,7 +89,7 @@ class HomeFragment : Fragment(), CarouselAdapter.Interaction,
                         setupProfileDialog(it.data)
                     }
                     showLoading(false)
-                }
+               }
                 is Resource.Error -> {
                     it.error?.let { it1 -> showError(it1) }
                     showLoading(false)
@@ -110,6 +110,18 @@ class HomeFragment : Fragment(), CarouselAdapter.Interaction,
                 }
             }
         })
+    }
+
+    override fun onResume() {
+        binding.popularShimmerContainer.startShimmer()
+        binding.recentShimmerContainer.startShimmer()
+        super.onResume()
+    }
+
+    override fun onStop() {
+        binding.recentShimmerContainer.startShimmer()
+        binding.popularShimmerContainer.stopShimmer()
+        super.onStop()
     }
 
     fun showLoading(isLoading: Boolean) {
@@ -160,13 +172,18 @@ class HomeFragment : Fragment(), CarouselAdapter.Interaction,
         homeViewModel.popular.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is Resource.Loading -> {
-                    showLoading(true)
+                    binding.popularShimmerContainer.startShimmer()
+                    binding.popularShimmerContainer.visibility = View.VISIBLE
                 }
                 is Resource.Success -> {
                     it.data?.let { popular -> popularAdapter.submitList(popular) }
+                    binding.popularShimmerContainer.stopShimmer()
+                    binding.popularShimmerContainer.visibility = View.GONE
                 }
                 is Resource.Error -> {
                     it.error?.let { message -> showError(message) }
+                    binding.popularShimmerContainer.stopShimmer()
+                    binding.popularShimmerContainer.visibility = View.GONE
                 }
             }
         })
@@ -187,13 +204,24 @@ class HomeFragment : Fragment(), CarouselAdapter.Interaction,
             println("Recent items ${it}")
             when (it) {
                 is Resource.Loading -> {
-                    showLoading(true)
+                    binding.recentShimmerContainer.apply {
+                        startShimmer()
+                        visibility = View.VISIBLE
+                    }
                 }
                 is Resource.Success -> {
                     it.data?.let { recent -> recommendAdapter.submitList(recent) }
+                    binding.recentShimmerContainer.apply {
+                        stopShimmer()
+                        visibility = View.GONE
+                    }
                 }
                 is Resource.Error -> {
                     it.error?.let { message -> showError(message) }
+                    binding.recentShimmerContainer.apply {
+                        stopShimmer()
+                        visibility = View.GONE
+                    }
                 }
             }
         })

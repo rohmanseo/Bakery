@@ -53,6 +53,7 @@ dependencies {
     implementation(Dependencies.AndroidX.navigation_ui)
     implementation(Dependencies.Material.legacy_support)
     implementation(Dependencies.Material.material)
+    implementation(Dependencies.CustomView.shimmer)
 
     implementation(Dependencies.AndroidX.glide)
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
@@ -66,7 +67,6 @@ dependencies {
 
     implementation(Dependencies.Reactivex.rx_android_3)
     implementation(Dependencies.Reactivex.rx_java_3)
-    implementation(Dependencies.AndroidX.room_rx)
     implementation(Dependencies.Reactivex.androidx_binding)
 
     implementation(Dependencies.Networking.retrofit)

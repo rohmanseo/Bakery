@@ -24,6 +24,7 @@ object Versions {
     const val moshi_kt = "1.11.0"
     const val room_ktx = "2.3.0"
     const val db_debug = "1.0.6"
+    const val shimmer = "0.5.0"
 }
 
 object Dependencies {
@@ -53,6 +54,7 @@ object Dependencies {
 
     object CustomView{
         const val circle_indicator = "me.relex:circleindicator:${Versions.circle_indicator}"
+        const val shimmer = "com.facebook.shimmer:shimmer:${Versions.shimmer}"
     }
 
     object Reactivex{
