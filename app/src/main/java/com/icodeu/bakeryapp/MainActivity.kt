@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
         dialog = MaterialAlertDialogBuilder(this)
             .setView(R.layout.loading_dialog)
             .create()
-        Log.d("screen width", this.getScreenWidthSize().toString())
+
         setContentView(binding.root)
     }
 

@@ -5,5 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface BreadRepository {
     suspend fun getRecent(): List<Bread>
+    suspend fun getRecentCache(): List<Bread>
     suspend fun getPopular(): List<Bread>
+    suspend fun getPopularCache(): List<Bread>
 }

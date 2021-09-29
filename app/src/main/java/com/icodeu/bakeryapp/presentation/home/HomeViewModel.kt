@@ -10,9 +10,6 @@ import com.icodeu.bakeryapp.domain.use_case.bread.GetPopularBreadUseCase
 import com.icodeu.bakeryapp.domain.use_case.bread.GetRecentBreadUseCase
 import com.icodeu.bakeryapp.domain.use_case.user.GetUserUseCase
 import com.icodeu.bakeryapp.domain.use_case.user.LogoutUseCase
-import com.icodeu.bakeryapp.presentation.ResponseStatus
-import com.icodeu.bakeryapp.presentation.ResponseStatus.STATUS_LOADING
-import com.icodeu.bakeryapp.presentation.ResponseStatus.STATUS_SUCCESS
 import com.icodeu.bakeryapp.utils.Resource
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch

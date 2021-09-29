@@ -11,11 +11,11 @@ import com.bumptech.glide.Glide
 import com.icodeu.bakeryapp.MainActivity
 import com.icodeu.bakeryapp.R
 import com.icodeu.bakeryapp.databinding.FragmentLoginBinding
-import com.icodeu.bakeryapp.presentation.ResponseStatus
 import com.icodeu.bakeryapp.utils.CommonUtils.isNotEmpty
 import com.icodeu.bakeryapp.utils.CommonUtils.isNotError
 import com.icodeu.bakeryapp.utils.CommonUtils.isValidEmail
 import com.icodeu.bakeryapp.utils.CommonUtils.shortSnackbar
+import com.icodeu.bakeryapp.utils.Resource
 import com.jakewharton.rxbinding4.widget.textChanges
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -65,17 +65,17 @@ class LoginFragment : Fragment() {
 
     private fun setupSubscriber() {
         loginViewModel.isLoggedIn.observe(viewLifecycleOwner, Observer {
-            when (it.status) {
-                ResponseStatus.STATUS_LOADING -> {
+            when (it) {
+                is Resource.Loading -> {
                     showLoading(true)
                 }
-                ResponseStatus.STATUS_SUCCESS -> {
+                is Resource.Success -> {
                     if (it.data == true) {
                         findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
                     }
                     showLoading(false)
                 }
-                ResponseStatus.STATUS_ERROR -> {
+                is Resource.Error -> {
                     showError(it.error!!)
                     showLoading(false)
                 }
@@ -83,17 +83,17 @@ class LoginFragment : Fragment() {
         })
 
         loginViewModel.user.observe(viewLifecycleOwner, Observer {
-            when (it.status) {
-                ResponseStatus.STATUS_LOADING -> {
+            when (it) {
+                is Resource.Loading -> {
                     showLoading(true)
                 }
-                ResponseStatus.STATUS_SUCCESS -> {
+                is Resource.Success -> {
                     if (it.data != null) {
                         findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
                     }
                     showLoading(false)
                 }
-                ResponseStatus.STATUS_ERROR -> {
+                is Resource.Error -> {
                     showError(it.error!!)
                     showLoading(false)
                 }

@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.icodeu.bakeryapp.R
-import com.icodeu.bakeryapp.presentation.ResponseStatus
 import com.icodeu.bakeryapp.utils.Resource
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

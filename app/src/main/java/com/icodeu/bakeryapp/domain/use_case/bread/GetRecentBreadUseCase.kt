@@ -13,15 +13,14 @@ class GetRecentBreadUseCase(private val breadRepository: BreadRepository) {
         try {
             emit(Resource.Loading())
             val bread = breadRepository.getRecent()
-            emit(Resource.Success<List<Bread>>(bread))
-
+            emit(Resource.Success(bread))
         } catch (e: HttpException) {
-            emit(Resource.Error(e.localizedMessage ?: "An unexpected error occurred"))
+            emit(Resource.Error(e.localizedMessage ?: "An unexpected error occurred",breadRepository.getRecentCache()))
         } catch (e: IOException) {
-            emit(Resource.Error("Connection failed"))
+            emit(Resource.Error("Connection failed",breadRepository.getRecentCache()))
         } catch (e: Exception) {
             e.printStackTrace()
-            emit(Resource.Error(e.message.toString()))
+            emit(Resource.Error(e.message.toString(),breadRepository.getRecentCache()))
         }
     }
 }

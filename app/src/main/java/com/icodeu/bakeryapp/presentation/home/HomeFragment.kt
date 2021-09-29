@@ -21,9 +21,6 @@ import com.icodeu.bakeryapp.R
 import com.icodeu.bakeryapp.databinding.FragmentHomeBinding
 import com.icodeu.bakeryapp.domain.model.Bread
 import com.icodeu.bakeryapp.domain.model.User
-import com.icodeu.bakeryapp.presentation.ResponseStatus.STATUS_ERROR
-import com.icodeu.bakeryapp.presentation.ResponseStatus.STATUS_LOADING
-import com.icodeu.bakeryapp.presentation.ResponseStatus.STATUS_SUCCESS
 import com.icodeu.bakeryapp.presentation.home.rv_adapters.CarouselAdapter
 import com.icodeu.bakeryapp.presentation.home.rv_adapters.RecommedRVAdapter
 import com.icodeu.bakeryapp.presentation.item.ItemFragment
@@ -182,6 +179,7 @@ class HomeFragment : Fragment(), CarouselAdapter.Interaction,
                 }
                 is Resource.Error -> {
                     it.error?.let { message -> showError(message) }
+                    it.data?.let { popular -> popularAdapter.submitList(popular) }
                     binding.popularShimmerContainer.stopShimmer()
                     binding.popularShimmerContainer.visibility = View.GONE
                 }
@@ -218,6 +216,7 @@ class HomeFragment : Fragment(), CarouselAdapter.Interaction,
                 }
                 is Resource.Error -> {
                     it.error?.let { message -> showError(message) }
+                    it.data?.let { recent -> recommendAdapter.submitList(recent) }
                     binding.recentShimmerContainer.apply {
                         stopShimmer()
                         visibility = View.GONE

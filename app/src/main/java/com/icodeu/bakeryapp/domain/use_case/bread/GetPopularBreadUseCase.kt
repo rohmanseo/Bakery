@@ -15,12 +15,13 @@ class GetPopularBreadUseCase(private val breadRepository: BreadRepository) {
             val bread = breadRepository.getPopular()
             emit(Resource.Success(bread))
         } catch (e: HttpException) {
-            emit(Resource.Error(e.localizedMessage ?: "An unexpected error occurred"))
+            emit(Resource.Error(e.localizedMessage ?: "An unexpected error occurred",breadRepository.getPopularCache()))
         } catch (e: IOException) {
-            emit(Resource.Error("Connection failed"))
+            emit(Resource.Error("Connection failed",breadRepository.getPopularCache()))
         } catch (e: Exception) {
             e.printStackTrace()
-            emit(Resource.Error(e.message.toString()))
+            emit(Resource.Error(e.message.toString(),breadRepository.getPopularCache()))
         }
     }
 }
+

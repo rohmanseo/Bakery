@@ -23,11 +23,19 @@ class BreadRepositoryImpl(
         return breadLocalDataSource.getPopular()
     }
 
+    override suspend fun getPopularCache(): List<Bread> {
+        return breadLocalDataSource.getPopular()
+    }
+
     override suspend fun getRecent(): List<Bread> {
             val remoteData = breadRemoteDataSource.getRecent()
             if (remoteData != null) {
                 breadLocalDataSource.insert(remoteData)
             }
+        return breadLocalDataSource.getRecent()
+    }
+
+    override suspend fun getRecentCache(): List<Bread> {
         return breadLocalDataSource.getRecent()
     }
 
