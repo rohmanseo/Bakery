@@ -18,7 +18,7 @@ class LoginViewModel(
     val user: SharedFlow<Resource<User>>
         get() = _user
 
-    suspend fun login(email: String, password: String) {
+    fun login(email: String, password: String)=viewModelScope.launch {
             loginUserUseCase(email, password).collect {
                 println("Login called")
                 _user.emit(it)

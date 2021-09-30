@@ -5,9 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.icodeu.bakeryapp.R
@@ -18,10 +16,10 @@ import com.icodeu.bakeryapp.utils.CommonUtils.isNotError
 import com.icodeu.bakeryapp.utils.CommonUtils.isValidEmail
 import com.icodeu.bakeryapp.utils.CommonUtils.shortSnackbar
 import com.icodeu.bakeryapp.utils.Resource
+import com.icodeu.bakeryapp.utils.collectWhenStarted
 import com.jakewharton.rxbinding4.widget.textChanges
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -70,42 +68,36 @@ class LoginFragment : Fragment() {
     }
 
     private fun setupSubscriber() {
-        lifecycleScope.launch {
-            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                mainViewModel.isLoggedIn.collect {
-                    when (it) {
-                        is Resource.Loading -> {
-                            showLoading(true)
-                        }
-                        is Resource.Success -> {
-                            showLoading(false)
-                            if (it.data == true) {
-                                findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
-                            }
-                        }
-                        is Resource.Error -> {
-                            showError(it.error!!)
-                            showLoading(false)
-                        }
+        mainViewModel.isLoggedIn.collectWhenStarted(this) {
+            when (it) {
+                is Resource.Loading -> {
+                    showLoading(true)
+                }
+                is Resource.Success -> {
+                    showLoading(false)
+                    if (it.data == true) {
+                        findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
                     }
+                }
+                is Resource.Error -> {
+                    showError(it.error!!)
+                    showLoading(false)
                 }
             }
         }
 
         lifecycleScope.launch {
-            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                loginViewModel.user.collect {
-                    when (it) {
-                        is Resource.Loading -> {
-                            showLoading(true)
-                        }
-                        is Resource.Success -> {
-                            showLoading(false)
-                        }
-                        is Resource.Error -> {
-                            showError(it.error!!)
-                            showLoading(false)
-                        }
+            loginViewModel.user.collectWhenStarted(this@LoginFragment) {
+                when (it) {
+                    is Resource.Loading -> {
+                        showLoading(true)
+                    }
+                    is Resource.Success -> {
+                        showLoading(false)
+                    }
+                    is Resource.Error -> {
+                        showError(it.error!!)
+                        showLoading(false)
                     }
                 }
             }
@@ -193,11 +185,7 @@ class LoginFragment : Fragment() {
     }
 
     private fun login(email: String, password: String) {
-        lifecycleScope.launch {
-            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                loginViewModel.login(email, password)
-            }
-        }
+        loginViewModel.login(email, password)
     }
 
     override fun onDestroyView() {
