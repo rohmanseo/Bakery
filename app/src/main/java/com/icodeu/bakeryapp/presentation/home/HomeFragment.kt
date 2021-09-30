@@ -101,9 +101,11 @@ class HomeFragment : Fragment(), CarouselAdapter.Interaction,
                 }
                 is Resource.Success -> {
                     findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
+                    showLoading(false)
                 }
                 is Resource.Error -> {
-                    it.error?.let { it1 -> showError(it1) }
+                    findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
+                    showLoading(false)
                 }
             }
         })
