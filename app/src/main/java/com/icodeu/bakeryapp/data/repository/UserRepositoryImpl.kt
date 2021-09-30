@@ -1,14 +1,14 @@
 package com.icodeu.bakeryapp.data.repository
 
 import com.icodeu.bakeryapp.data.local.user.TokenHolder
-import com.icodeu.bakeryapp.data.local.user.UserLocalDataStore
+import com.icodeu.bakeryapp.data.local.user.UserLocalDataSource
 import com.icodeu.bakeryapp.data.remote.user.UserRemoteDataSource
 import com.icodeu.bakeryapp.domain.model.User
 import com.icodeu.bakeryapp.domain.repository.UserRepository
 
 class UserRepositoryImpl(
-    private val userRemoteDataStore: UserRemoteDataSource,
-    private val userLocalDataStore: UserLocalDataStore
+    private val userLocalDataSource: UserLocalDataSource,
+    private val remoteDataSource: UserRemoteDataSource,
 ) : UserRepository {
     private val tokenHolder = TokenHolder()
 
@@ -17,9 +17,9 @@ class UserRepositoryImpl(
     }
 
     override suspend fun login(email: String, password: String): User? {
-        val user: User? = userRemoteDataStore.login(email, password)
+        val user: User? = remoteDataSource.login(email, password)
         if (user != null) {
-            userLocalDataStore.insert(user)
+            userLocalDataSource.insert(user)
             tokenHolder.token = user.token
         }
         return user
@@ -31,7 +31,7 @@ class UserRepositoryImpl(
         password: String,
         password_confirmation: String
     ): User? {
-        return userRemoteDataStore.register(
+        return remoteDataSource.register(
             name = name,
             email = email,
             password = password,
@@ -40,7 +40,7 @@ class UserRepositoryImpl(
     }
 
     override suspend fun getLoggedInUser(): User? {
-        val user = userLocalDataStore.getUser()
+        val user = userLocalDataSource.getUser()
         user?.token.let { token ->
             tokenHolder.token = token
         }
@@ -48,13 +48,13 @@ class UserRepositoryImpl(
     }
 
     override suspend fun logout(): Boolean {
-        userRemoteDataStore.logout()
-        userLocalDataStore.delete()
+        userLocalDataSource.delete()
         tokenHolder.token = null
+        remoteDataSource.logout()
         return true
     }
 
     override suspend fun isLoggedIn(): Boolean {
-        return userLocalDataStore.getUserCount() != 0
+        return userLocalDataSource.getUserCount() != 0
     }
 }
