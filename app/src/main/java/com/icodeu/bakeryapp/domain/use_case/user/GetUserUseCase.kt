@@ -4,6 +4,8 @@ import com.icodeu.bakeryapp.domain.model.User
 import com.icodeu.bakeryapp.domain.repository.UserRepository
 import com.icodeu.bakeryapp.utils.Resource
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 import java.io.IOException
@@ -11,11 +13,11 @@ import java.io.IOException
 
 class GetUserUseCase(val userRepository: UserRepository) {
 
-    operator fun invoke(): Flow<Resource<User>> = flow {
+    operator fun invoke(): Flow<Resource<User?>> = flow {
         try {
             emit(Resource.Loading())
             val user = userRepository.getLoggedInUser()
-            emit(Resource.Success<User>(user!!))
+            emitAll(user)
         } catch (e: HttpException) {
             emit(Resource.Error(e.localizedMessage ?: "An unexpected error occurred"))
         } catch (e: IOException) {

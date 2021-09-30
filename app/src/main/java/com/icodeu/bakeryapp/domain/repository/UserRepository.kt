@@ -1,6 +1,9 @@
 package com.icodeu.bakeryapp.domain.repository
 
 import com.icodeu.bakeryapp.domain.model.User
+import com.icodeu.bakeryapp.utils.Resource
+import kotlinx.coroutines.flow.Flow
+
 
 interface UserRepository {
     fun getToken(): String?
@@ -12,7 +15,7 @@ interface UserRepository {
         password_confirmation: String
     ): User?
 
-    suspend fun getLoggedInUser(): User?
+    suspend fun getLoggedInUser(): Flow<Resource<User?>>
     suspend fun logout(): Boolean
-    suspend fun isLoggedIn(): Boolean
+    suspend fun isLoggedIn(): Flow<Resource<Boolean>>
 }

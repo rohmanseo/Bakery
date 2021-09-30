@@ -5,14 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.icodeu.bakeryapp.R
+import com.icodeu.bakeryapp.presentation.MainViewModel
 import com.icodeu.bakeryapp.utils.Resource
+import kotlinx.coroutines.flow.collect
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class SplashscreenFragment : Fragment() {
-    private val splashScreenViewModel: SplashScreenViewModel by viewModel()
+    private val mainViewModel: MainViewModel by sharedViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,24 +35,24 @@ class SplashscreenFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        lifecycleScope.launchWhenStarted {
+            mainViewModel.isLoggedIn.collect {
+                when (it) {
+                    is Resource.Error -> {
 
-        splashScreenViewModel.isLoggedIn.observe(viewLifecycleOwner, {
+                    }
+                    is Resource.Success -> {
+                        if (it.data == true) {
+                            findNavController().navigate(R.id.action_splashscreenFragment_to_homeFragment)
+                        } else {
+                            findNavController().navigate(R.id.action_splashscreenFragment_to_loginFragment)
+                        }
+                    }
+                    is Resource.Loading -> {
 
-            when(it){
-                is Resource.Error -> {
-
-                }
-                is Resource.Success -> {
-                    if (it.data == true){
-                        findNavController().navigate(R.id.action_splashscreenFragment_to_homeFragment)
-                    }else{
-                        findNavController().navigate(R.id.action_splashscreenFragment_to_loginFragment)
                     }
                 }
-                is Resource.Loading -> {
-
-                }
             }
-        })
+        }
     }
 }

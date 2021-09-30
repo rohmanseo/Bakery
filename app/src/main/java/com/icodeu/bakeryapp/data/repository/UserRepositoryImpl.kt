@@ -5,6 +5,10 @@ import com.icodeu.bakeryapp.data.local.user.UserLocalDataSource
 import com.icodeu.bakeryapp.data.remote.user.UserRemoteDataSource
 import com.icodeu.bakeryapp.domain.model.User
 import com.icodeu.bakeryapp.domain.repository.UserRepository
+import com.icodeu.bakeryapp.utils.Resource
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 
 class UserRepositoryImpl(
     private val userLocalDataSource: UserLocalDataSource,
@@ -39,12 +43,15 @@ class UserRepositoryImpl(
         )
     }
 
-    override suspend fun getLoggedInUser(): User? {
+    override suspend fun getLoggedInUser(): Flow<Resource<User?>> {
         val user = userLocalDataSource.getUser()
-        user?.token.let { token ->
-            tokenHolder.token = token
+        return user.onEach {
+
+            tokenHolder.token = it?.token
         }
-        return user
+            .map {
+                Resource.Success(it)
+            }
     }
 
     override suspend fun logout(): Boolean {
@@ -54,7 +61,9 @@ class UserRepositoryImpl(
         return true
     }
 
-    override suspend fun isLoggedIn(): Boolean {
-        return userLocalDataSource.getUserCount() != 0
+    override suspend fun isLoggedIn(): Flow<Resource<Boolean>> {
+        return userLocalDataSource.getUserCount().map {
+            Resource.Success(it != 0)
+        }
     }
 }

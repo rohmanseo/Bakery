@@ -5,22 +5,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.icodeu.bakeryapp.MainActivity
 import com.icodeu.bakeryapp.R
 import com.icodeu.bakeryapp.databinding.FragmentRegisterBinding
+import com.icodeu.bakeryapp.presentation.MainViewModel
 import com.icodeu.bakeryapp.utils.CommonUtils.isNotEmpty
 import com.icodeu.bakeryapp.utils.CommonUtils.isNotError
 import com.icodeu.bakeryapp.utils.CommonUtils.isValidEmail
 import com.icodeu.bakeryapp.utils.CommonUtils.shortSnackbar
 import com.icodeu.bakeryapp.utils.Resource
+import com.icodeu.bakeryapp.utils.collectWhenStarted
 import com.jakewharton.rxbinding4.widget.textChanges
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.functions.BiFunction
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.concurrent.TimeUnit
 
@@ -30,6 +31,7 @@ class RegisterFragment : Fragment() {
     private lateinit var binding: FragmentRegisterBinding
     val compositeDisposable = CompositeDisposable()
     private val registerViewModel: RegisterViewModel by viewModel()
+    private val mainViewModel: MainViewModel by sharedViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,8 +68,7 @@ class RegisterFragment : Fragment() {
 
     private fun setupSubscriber() {
         binding.apply {
-
-            registerViewModel.user.observe(viewLifecycleOwner, Observer {
+            registerViewModel.user.collectWhenStarted(this@RegisterFragment) {
                 when (it) {
                     is Resource.Loading -> {
                         showLoading(true)
@@ -79,15 +80,16 @@ class RegisterFragment : Fragment() {
                         showLoading(false)
                     }
                     is Resource.Error -> {
-                        showError(it.error?:"")
+                        showError(it.error ?: "")
                         showLoading(false)
                     }
                 }
-            })
+            }
         }
     }
+
     fun showLoading(isLoading: Boolean) {
-        (activity as MainActivity).showLoading(isLoading)
+        mainViewModel.showDialog(isLoading)
     }
 
     fun showError(errorMessage: String) {
@@ -189,7 +191,7 @@ class RegisterFragment : Fragment() {
                             passwordoutline.error = "Password must be at least 6 characters"
                         } else {
                             passwordoutline.isErrorEnabled = false
-                            if (edtPassword.text.toString() == edtRePassword.text.toString()){
+                            if (edtPassword.text.toString() == edtRePassword.text.toString()) {
                                 rePasswordoutline.isErrorEnabled = false
                             }
                         }
