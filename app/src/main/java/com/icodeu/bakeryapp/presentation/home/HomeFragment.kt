@@ -10,22 +10,23 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.icodeu.bakeryapp.MainActivity
 import com.icodeu.bakeryapp.R
 import com.icodeu.bakeryapp.databinding.FragmentHomeBinding
 import com.icodeu.bakeryapp.domain.model.Bread
 import com.icodeu.bakeryapp.domain.model.User
+import com.icodeu.bakeryapp.presentation.MainViewModel
 import com.icodeu.bakeryapp.presentation.home.rv_adapters.CarouselAdapter
 import com.icodeu.bakeryapp.presentation.home.rv_adapters.RecommedRVAdapter
 import com.icodeu.bakeryapp.presentation.item.ItemFragment
 import com.icodeu.bakeryapp.utils.CommonUtils.shortSnackbar
 import com.icodeu.bakeryapp.utils.Resource
+import com.icodeu.bakeryapp.utils.collectWhenStarted
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment(), CarouselAdapter.Interaction,
@@ -36,6 +37,7 @@ class HomeFragment : Fragment(), CarouselAdapter.Interaction,
     private lateinit var recommendAdapter: RecommedRVAdapter
     private val homeViewModel: HomeViewModel by viewModel()
     private lateinit var dialog: AlertDialog
+    private val mainViewModel: MainViewModel by sharedViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +45,7 @@ class HomeFragment : Fragment(), CarouselAdapter.Interaction,
 
         }
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -71,31 +74,29 @@ class HomeFragment : Fragment(), CarouselAdapter.Interaction,
     }
 
     private fun setupSubscriber() {
-        homeViewModel.user.observe(viewLifecycleOwner, {
+        mainViewModel.user.collectWhenStarted(this) {
             when (it) {
                 is Resource.Loading -> {
                     showLoading(true)
                 }
-               is Resource.Success -> {
-                    if (it.data == null) {
-                        findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
-                    } else {
+                is Resource.Success -> {
+                    if (it.data != null) {
                         it.data.let { user ->
                             binding.tvUserName.setText("Wecome\n${user.name}")
                         }
                         setupProfileDialog(it.data)
                     }
                     showLoading(false)
-               }
+                }
                 is Resource.Error -> {
                     it.error?.let { it1 -> showError(it1) }
                     showLoading(false)
                 }
             }
-        })
+        }
 
-        homeViewModel.logout.observe(viewLifecycleOwner,{
-            when(it) {
+        homeViewModel.logout.collectWhenStarted(this) {
+            when (it) {
                 is Resource.Loading -> {
                     showLoading(true)
                 }
@@ -108,7 +109,7 @@ class HomeFragment : Fragment(), CarouselAdapter.Interaction,
                     showLoading(false)
                 }
             }
-        })
+        }
     }
 
     override fun onResume() {
@@ -124,11 +125,11 @@ class HomeFragment : Fragment(), CarouselAdapter.Interaction,
     }
 
     fun showLoading(isLoading: Boolean) {
-        (activity as MainActivity).showLoading(isLoading)
+        mainViewModel.showDialog(isLoading)
     }
 
     fun showError(errorMessage: String) {
-        requireView().shortSnackbar(errorMessage ?: "Error")
+        requireView().shortSnackbar(errorMessage)
     }
 
     private fun setupCardAvatar() {
@@ -167,8 +168,8 @@ class HomeFragment : Fragment(), CarouselAdapter.Interaction,
 
     private fun setupPopular() {
         popularAdapter = CarouselAdapter(this)
-        homeViewModel.getPopular()
-        homeViewModel.popular.observe(viewLifecycleOwner, Observer {
+
+        homeViewModel.popular.collectWhenStarted(this) {
             when (it) {
                 is Resource.Loading -> {
                     binding.popularShimmerContainer.startShimmer()
@@ -186,8 +187,7 @@ class HomeFragment : Fragment(), CarouselAdapter.Interaction,
                     binding.popularShimmerContainer.visibility = View.GONE
                 }
             }
-        })
-
+        }
         binding.apply {
             rvPopular.hasFixedSize()
             rvPopular.layoutManager =
@@ -199,8 +199,7 @@ class HomeFragment : Fragment(), CarouselAdapter.Interaction,
     private fun setupRecommended() {
         recommendAdapter = RecommedRVAdapter(this)
 
-        homeViewModel.getRecent()
-        homeViewModel.recent.observe(viewLifecycleOwner, Observer {
+        homeViewModel.recent.collectWhenStarted(this) {
             println("Recent items ${it}")
             when (it) {
                 is Resource.Loading -> {
@@ -225,7 +224,7 @@ class HomeFragment : Fragment(), CarouselAdapter.Interaction,
                     }
                 }
             }
-        })
+        }
 
         binding.apply {
             rvRecommended.adapter = recommendAdapter
