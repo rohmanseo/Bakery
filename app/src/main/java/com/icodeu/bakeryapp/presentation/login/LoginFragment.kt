@@ -17,18 +17,17 @@ import com.icodeu.bakeryapp.utils.CommonUtils.isValidEmail
 import com.icodeu.bakeryapp.utils.CommonUtils.shortSnackbar
 import com.icodeu.bakeryapp.utils.Resource
 import com.icodeu.bakeryapp.utils.collectWhenStarted
-import com.jakewharton.rxbinding4.widget.textChanges
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.disposables.CompositeDisposable
+import com.icodeu.bakeryapp.utils.flowBinding.textChanges
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.concurrent.TimeUnit
 
 class LoginFragment : Fragment() {
 
     private lateinit var binding: FragmentLoginBinding
-    val compositeDisposable = CompositeDisposable()
     val loginViewModel: LoginViewModel by viewModel()
     private val mainViewModel: MainViewModel by sharedViewModel()
 
@@ -148,39 +147,38 @@ class LoginFragment : Fragment() {
         }
     }
 
+    @ExperimentalCoroutinesApi
+    @FlowPreview
     private fun setupRxBinding() {
         binding.apply {
             val emailSub = edtEmail.textChanges()
+                .map { it.toString() }
                 .filter { it.isNotEmpty() }
-                .skip(1)
-                .debounce(500, TimeUnit.MILLISECONDS)
+                .drop(1)
+                .debounce(500)
             val passwordSub = edtPassword.textChanges()
                 .filter { it.isNotEmpty() }
-                .skip(1)
-                .debounce(500, TimeUnit.MILLISECONDS)
+                .drop(1)
+                .debounce(500)
 
-            compositeDisposable.add(emailSub
-                .map { it.toString().isValidEmail() }
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
+            emailSub
+                .map { it.isValidEmail() }
+                .collectWhenStarted(this@LoginFragment) {
                     if (it) {
                         emailOutline.error = "Invalid Email"
                     } else {
                         emailOutline.isErrorEnabled = false
                     }
-                })
-            compositeDisposable.add(
-                passwordSub
-                    .map { it.length < 6 }
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe {
-                        if (it) {
-                            passwordoutline.error = "Password must be at least 6 characters"
-                        } else {
-                            passwordoutline.isErrorEnabled = false
-                        }
+                }
+            passwordSub
+                .map { it.length < 6 }
+                .collectWhenStarted(this@LoginFragment) {
+                    if (it) {
+                        passwordoutline.error = "Password must be at least 6 characters"
+                    } else {
+                        passwordoutline.isErrorEnabled = false
                     }
-            )
+                }
         }
     }
 
@@ -188,12 +186,6 @@ class LoginFragment : Fragment() {
         loginViewModel.login(email, password)
     }
 
-    override fun onDestroyView() {
-        if (!compositeDisposable.isDisposed) {
-            compositeDisposable.dispose()
-        }
-        super.onDestroyView()
-    }
 
     companion object {
 
