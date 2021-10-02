@@ -16,20 +16,18 @@ import com.icodeu.bakeryapp.utils.CommonUtils.isValidEmail
 import com.icodeu.bakeryapp.utils.CommonUtils.shortSnackbar
 import com.icodeu.bakeryapp.utils.Resource
 import com.icodeu.bakeryapp.utils.collectWhenStarted
-import com.jakewharton.rxbinding4.widget.textChanges
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.functions.BiFunction
+import com.icodeu.bakeryapp.utils.flowBinding.textChanges
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.concurrent.TimeUnit
 
 
 class RegisterFragment : Fragment() {
 
     private lateinit var binding: FragmentRegisterBinding
-    val compositeDisposable = CompositeDisposable()
+
     private val registerViewModel: RegisterViewModel by viewModel()
     private val mainViewModel: MainViewModel by sharedViewModel()
 
@@ -48,6 +46,7 @@ class RegisterFragment : Fragment() {
         return binding.root
     }
 
+    @FlowPreview
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.apply {
@@ -60,7 +59,7 @@ class RegisterFragment : Fragment() {
             tvLogin.setOnClickListener {
                 findNavController().popBackStack()
             }
-            setupRxBinding()
+            setupFlowBinding()
             setupRegisterButton()
             setupSubscriber()
         }
@@ -141,94 +140,78 @@ class RegisterFragment : Fragment() {
 
     }
 
-    private fun setupRxBinding() {
+    @FlowPreview
+    @ExperimentalCoroutinesApi
+    private fun setupFlowBinding() {
 
         binding.apply {
-            val nameSubscriber = edtname.textChanges()
-                .skip(1).filter { it.isNotEmpty() }
-                .debounce(500, TimeUnit.MILLISECONDS)
-            val emailSubscriber = edtEmail.textChanges()
-                .skip(1).filter { it.isNotEmpty() }
-                .debounce(500, TimeUnit.MILLISECONDS)
-            val passwordSubscriber = edtPassword.textChanges()
-                .skip(1).filter { it.isNotEmpty() }
-                .debounce(500, TimeUnit.MILLISECONDS)
-            val passwordReSubscriber = edtRePassword.textChanges()
-                .skip(1).filter { it.isNotEmpty() }
-                .debounce(500, TimeUnit.MILLISECONDS)
+            val nameSubscriber = edtname.textChanges().map { it.toString() }
+                .drop(1).filter { it.isNotEmpty() }
+                .debounce(500)
+            val emailSubscriber = edtEmail.textChanges().map { it.toString() }
+                .drop(1).filter { it.isNotEmpty() }
+                .debounce(500)
+            val passwordSubscriber = edtPassword.textChanges().map { it.toString() }
+                .drop(1).filter { it.isNotEmpty() }
+                .debounce(500)
+            val passwordReSubscriber = edtRePassword.textChanges().map { it.toString() }
+                .drop(1).filter { it.isNotEmpty() }
+                .debounce(500)
 
-
-            compositeDisposable.add(
-                nameSubscriber
-                    .map { it.length < 6 }
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe {
-                        if (it) {
-                            nameOutline.error = "Name must be at least 6 characters"
-                        } else {
-                            nameOutline.isErrorEnabled = false
+            nameSubscriber
+                .map { it.length < 6 }
+                .collectWhenStarted(this@RegisterFragment) {
+                    if (it) {
+                        nameOutline.error = "Name must be at least 6 characters"
+                    } else {
+                        nameOutline.isErrorEnabled = false
+                    }
+                }
+            emailSubscriber
+                .map { it.isValidEmail() }
+                .collectWhenStarted(this@RegisterFragment) {
+                    if (it) {
+                        emailOutline.error = "Invalid Email"
+                    } else {
+                        emailOutline.isErrorEnabled = false
+                    }
+                }
+            passwordSubscriber
+                .map { it.length < 6 }
+                .collectWhenStarted(this@RegisterFragment) {
+                    if (it) {
+                        passwordoutline.error = "Password must be at least 6 characters"
+                    } else {
+                        passwordoutline.isErrorEnabled = false
+                        if (edtPassword.text.toString() == edtRePassword.text.toString()) {
+                            rePasswordoutline.isErrorEnabled = false
                         }
                     }
-            )
-            compositeDisposable.add(
-                emailSubscriber
-                    .map { it.toString().isValidEmail() }
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe {
-                        if (it) {
-                            emailOutline.error = "Invalid Email"
-                        } else {
-                            emailOutline.isErrorEnabled = false
-                        }
-                    }
-            )
-            compositeDisposable.add(
-                passwordSubscriber
-                    .map { it.length < 6 }
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe {
-                        if (it) {
-                            passwordoutline.error = "Password must be at least 6 characters"
-                        } else {
-                            passwordoutline.isErrorEnabled = false
-                            if (edtPassword.text.toString() == edtRePassword.text.toString()) {
-                                rePasswordoutline.isErrorEnabled = false
-                            }
-                        }
-                    }
-            )
+                }
             passwordReSubscriber
                 .map { it.length < 6 }
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
+                .collectWhenStarted(this@RegisterFragment)
+                {
                     if (it) {
                         rePasswordoutline.error = "Re-type password must be at least 6 characters"
                     } else {
                         rePasswordoutline.isErrorEnabled = false
                     }
                 }
-            compositeDisposable.add(
-                Observable
-                    .combineLatest(
-                        passwordSubscriber,
-                        passwordReSubscriber,
-                        BiFunction { _, _ ->
-                            edtRePassword.text.toString() != edtPassword.text.toString()
-                        })
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe {
-                        if (it) {
-                            if (edtRePassword.text.toString().length < 6) {
-                                rePasswordoutline.error =
-                                    "Re-type password must be at least 6 characters\nPassword does not match"
-                            } else {
-                                rePasswordoutline.error = "Re-type password does not match"
-                            }
-                        } else {
-                            rePasswordoutline.isErrorEnabled = false
-                        }
+            passwordSubscriber.combine(passwordReSubscriber) { password, rePassWord ->
+                password != rePassWord
+            }.collectWhenStarted(this@RegisterFragment) {
+                if (it) {
+                    if (edtRePassword.text.toString().length < 6) {
+                        rePasswordoutline.error =
+                            "Re-type password must be at least 6 characters\nPassword does not match"
+                    } else {
+                        rePasswordoutline.error = "Re-type password does not match"
                     }
-            )
+                } else {
+                    rePasswordoutline.isErrorEnabled = false
+                }
+            }
         }
     }
 
@@ -237,12 +220,6 @@ class RegisterFragment : Fragment() {
         binding.rePasswordoutline.error = text
     }
 
-    override fun onDestroyView() {
-        if (!compositeDisposable.isDisposed) {
-            compositeDisposable.dispose()
-        }
-        super.onDestroyView()
-    }
 
     companion object {
 

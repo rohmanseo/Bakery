@@ -65,10 +65,6 @@ dependencies {
     implementation(Dependencies.DI.koin)
     testImplementation(Dependencies.DI.koin_test_imp)
 
-    implementation(Dependencies.Reactivex.rx_android_3)
-    implementation(Dependencies.Reactivex.rx_java_3)
-    implementation(Dependencies.Reactivex.androidx_binding)
-
     implementation(Dependencies.Networking.retrofit)
     implementation(Dependencies.Networking.moshi)
     implementation(Dependencies.Networking.moshi_kt)

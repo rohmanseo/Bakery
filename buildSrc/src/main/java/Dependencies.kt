@@ -14,12 +14,9 @@ object Versions {
     const val legacy_support = "1.0.0"
     const val view_pager2 = "1.0.0"
     const val glide = "4.12.0"
-    const val rx_android_3 = "3.0.0"
-    const val rx_java_3 = "3.0.0"
     const val circle_indicator = "2.1.6"
     const val simple_storage = "0.12.0"
     const val koin_version = "3.1.2"
-    const val rx_binding = "4.0.0"
     const val retrofit = "2.9.0"
     const val moshi_kt = "1.11.0"
     const val room_ktx = "2.3.0"
@@ -40,7 +37,6 @@ object Dependencies {
         const val navigation_safe_args = "androidx.navigation:navigation-safe-args-gradle-plugin:${Versions.nav_version}"
         const val navigation_dynamic_support = "androidx.navigation:navigation-dynamic-features-fragment:${Versions.nav_version}"
         const val room = "androidx.room:room-runtime:${Versions.room_version}"
-        const val room_rx = "androidx.room:room-rxjava3:${Versions.room_version}"
         const val room_ktx = "androidx.room:room-ktx:${Versions.room_ktx}"
         const val room_compiler = "androidx.room:room-compiler:${Versions.room_version}"
         const val view_pager_2 = "androidx.viewpager2:viewpager2:${Versions.view_pager2}"
@@ -57,11 +53,6 @@ object Dependencies {
         const val shimmer = "com.facebook.shimmer:shimmer:${Versions.shimmer}"
     }
 
-    object Reactivex{
-        const val rx_android_3 = "io.reactivex.rxjava3:rxandroid:${Versions.rx_android_3}"
-        const val rx_java_3 =     "io.reactivex.rxjava3:rxjava:${Versions.rx_java_3}"
-        const val androidx_binding = "com.jakewharton.rxbinding4:rxbinding-core:${Versions.rx_binding}"
-    }
     object Storage{
         const val simple_storage = "com.anggrayudi:storage:${Versions.simple_storage}"
     }
