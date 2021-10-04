@@ -1,5 +1,6 @@
 package com.icodeu.bakeryapp.di.modules
 
+import com.icodeu.bakeryapp.BuildConfig
 import com.icodeu.bakeryapp.data.remote.services.BreadService
 import com.icodeu.bakeryapp.data.remote.services.UserService
 import com.icodeu.bakeryapp.data.repository.UserRepositoryImpl
@@ -8,6 +9,7 @@ import com.icodeu.bakeryapp.utils.Constant
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -23,6 +25,12 @@ val networkModules = module {
     single {
         OkHttpClient.Builder()
             .callTimeout(5, TimeUnit.SECONDS)
+            .addInterceptor(
+                HttpLoggingInterceptor()
+                    .apply {
+                        level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY
+                        else HttpLoggingInterceptor.Level.NONE
+                    })
             .addInterceptor { chain ->
                 val request = chain.request().newBuilder()
                 val userRepo = get<UserRepository>()

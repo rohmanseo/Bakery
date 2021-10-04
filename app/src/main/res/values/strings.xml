@@ -6,4 +6,9 @@
     <string name="login"><u>Login</u></string>
     <string name="title_auth">Module Title</string>
     <string name="title_sample_module">sample</string>
+    <string name="button_buy_now">Buy Now</string>
+    <string name="content_desc_bread_image">Bread Image</string>
+    <string name="content_desc_back_button">Back Button</string>
+    <string name="message_successfully_add_favorite">Successfully added bread to favorites</string>
+    <string name="message_successfully_remove_favorite">Successfully removed bread from favorites</string>
 </resources>

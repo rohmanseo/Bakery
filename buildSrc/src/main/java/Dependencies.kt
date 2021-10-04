@@ -22,6 +22,7 @@ object Versions {
     const val rx_binding = "4.0.0"
     const val retrofit = "2.9.0"
     const val moshi_kt = "1.11.0"
+    const val logging_interceptor = "3.10.0"
     const val room_ktx = "2.3.0"
     const val db_debug = "1.0.6"
     const val shimmer = "0.5.0"
@@ -69,6 +70,7 @@ object Dependencies {
         const val retrofit = "com.squareup.retrofit2:retrofit:${Versions.retrofit}"
         const val moshi = "com.squareup.retrofit2:converter-moshi:${Versions.retrofit}"
         const val moshi_kt = "com.squareup.moshi:moshi-kotlin:${Versions.moshi_kt}"
+        const val logging_interceptor = "com.squareup.okhttp3:logging-interceptor:${Versions.logging_interceptor}"
     }
     object DI{
         const val koin = "io.insert-koin:koin-android:${Versions.koin_version}"

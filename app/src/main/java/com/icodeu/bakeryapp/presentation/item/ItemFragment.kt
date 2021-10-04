@@ -6,19 +6,28 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import com.bumptech.glide.Glide
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.icodeu.bakeryapp.R
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-
-import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.icodeu.bakeryapp.databinding.FragmentItemBinding
+import com.icodeu.bakeryapp.domain.model.Bread
+import com.icodeu.bakeryapp.utils.CommonUtils.shortSnackbar
 
 
 class ItemFragment : BottomSheetDialogFragment() {
 
+    private val TAG = ItemFragment::class.java.simpleName
+    private val PARAM1 = "bread"
+
+    private lateinit var binding: FragmentItemBinding
+    private var bread: Bread? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-
+            this.bread = it.getParcelable(PARAM1)
         }
     }
 
@@ -29,9 +38,8 @@ class ItemFragment : BottomSheetDialogFragment() {
             val parentLayout =
                 bottomSheetDialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
             parentLayout?.let {
-                val behaviour = BottomSheetBehavior.from(it)
                 setupFullHeight(it)
-                behaviour.state = BottomSheetBehavior.STATE_EXPANDED
+                setupBehavior(it)
             }
         }
         return dialog
@@ -44,21 +52,89 @@ class ItemFragment : BottomSheetDialogFragment() {
         bottomSheet.layoutParams = layoutParams
     }
 
+    private fun setupBehavior(bottomSheet: View) {
+        val behaviour = BottomSheetBehavior.from(bottomSheet)
+        behaviour.state = BottomSheetBehavior.STATE_HIDDEN
+        behaviour.state = BottomSheetBehavior.STATE_EXPANDED
+        behaviour.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                if (BottomSheetBehavior.STATE_EXPANDED == newState) {
+                    binding.appBarLayout.visibility = View.VISIBLE
+                }
+                if (BottomSheetBehavior.STATE_DRAGGING == newState) {
+                    binding.appBarLayout.visibility = View.INVISIBLE
+                }
+
+                if (BottomSheetBehavior.STATE_HIDDEN == newState) {
+                    dismiss()
+                }
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+
+            }
+
+        })
+    }
+
+    private fun hideAppBar(view: View) {
+        val params = view.layoutParams
+        params.height = 0
+        view.layoutParams = params
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
+        binding = FragmentItemBinding.inflate(layoutInflater)
+        return binding.root
+    }
 
-        return inflater.inflate(R.layout.fragment_item, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        hideAppBar(binding.appBarLayout)
+
+        setupListeners()
+        setupDetail()
+        setupSimilar()
+    }
+
+    private fun setupListeners() {
+        binding.btnBack.setOnClickListener {
+            dismiss()
+        }
+        binding.toggleFavorite.setOnCheckedChangeListener { compoundButton, b ->
+            if (b) {
+                binding.scrollView.shortSnackbar(getString(R.string.message_successfully_add_favorite))
+            } else {
+                binding.scrollView.shortSnackbar(getString(R.string.message_successfully_remove_favorite))
+            }
+        }
+    }
+
+    private fun setupDetail() {
+        this.bread?.let { bread ->
+            binding.bread = bread
+            Glide.with(requireContext())
+                .load(bread.validImage())
+                .placeholder(R.drawable.ic_round_broken_image_32)
+                .into(binding.ivBread)
+        }
+    }
+
+    private fun setupSimilar() {
+        //TODO: Display similar breads
     }
 
     companion object {
 
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(param1: Bread, param2: String? = "") =
             ItemFragment().apply {
                 arguments = Bundle().apply {
-
+                    putParcelable(PARAM1, param1)
                 }
             }
     }
