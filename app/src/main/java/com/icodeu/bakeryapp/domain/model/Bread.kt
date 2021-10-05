@@ -1,10 +1,13 @@
 package com.icodeu.bakeryapp.domain.model
 
+import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.icodeu.bakeryapp.utils.Constant.BASE_URL
 import com.squareup.moshi.Json
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 @Entity(tableName = "bread")
 data class Bread(
     @Json(name = "id") @PrimaryKey val id: Int,
@@ -13,7 +16,7 @@ data class Bread(
     @Json(name = "rating") var rating: Double? = 0.0,
     @Json(name = "price") var price: Double? = 0.0,
     @Json(name = "views") var views: Int? = 0
-) {
+):Parcelable {
     fun shortPrice(): Int {
         return (this.price?.div(1000.0))?.toInt() ?: 0
     }

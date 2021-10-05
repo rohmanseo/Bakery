@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("kotlin-android")
     id("kotlin-kapt")
+    id("kotlin-parcelize")
 }
 
 android {
@@ -68,6 +69,7 @@ dependencies {
     implementation(Dependencies.Networking.retrofit)
     implementation(Dependencies.Networking.moshi)
     implementation(Dependencies.Networking.moshi_kt)
+    implementation(Dependencies.Networking.logging_interceptor)
 
     implementation(Dependencies.AndroidX.room)
     implementation(Dependencies.AndroidX.room_ktx)
