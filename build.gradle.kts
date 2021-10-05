@@ -15,6 +15,9 @@ buildscript {
     }
 }
 
+tasks.withType<Test> {
+    useJUnitPlatform()
+}
 
 tasks.register<Delete>(name="type"){
     delete(rootProject.buildDir)

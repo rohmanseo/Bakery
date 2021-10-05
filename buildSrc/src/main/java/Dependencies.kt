@@ -22,6 +22,7 @@ object Versions {
     const val room_ktx = "2.3.0"
     const val db_debug = "1.0.6"
     const val shimmer = "0.5.0"
+    const val goog_truth = "1.1.3"
 }
 
 object Dependencies {
@@ -67,6 +68,7 @@ object Dependencies {
     }
 
     object Test {
+        const val goog_truth = "com.google.truth:truth:${Versions.goog_truth}"
         const val db_debug = "com.amitshekhar.android:debug-db:${Versions.db_debug}"
         const val jUnit = "junit:junit:${Versions.jUnit}"
         const val jUnitExt = "androidx.test.ext:junit:${Versions.jUnitExt}"

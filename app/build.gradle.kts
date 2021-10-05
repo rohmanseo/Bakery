@@ -77,4 +77,5 @@ dependencies {
     androidTestImplementation(Dependencies.Test.jUnitExt)
     androidTestImplementation(Dependencies.Test.espresso)
     debugImplementation(Dependencies.Test.db_debug)
+    testImplementation(Dependencies.Test.goog_truth)
 }
