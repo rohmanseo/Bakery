@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -13,15 +15,26 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.icodeu.bakeryapp.R
 import com.icodeu.bakeryapp.databinding.FragmentItemBinding
 import com.icodeu.bakeryapp.domain.model.Bread
+import com.icodeu.bakeryapp.presentation.MainViewModel
+import com.icodeu.bakeryapp.presentation.item.rv_adapters.SimilarRVAdapter
 import com.icodeu.bakeryapp.utils.CommonUtils.shortSnackbar
+import com.icodeu.bakeryapp.utils.Resource
+import com.icodeu.bakeryapp.utils.collectWhenStarted
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class ItemFragment : BottomSheetDialogFragment() {
+class ItemFragment : BottomSheetDialogFragment(), SimilarRVAdapter.SimilarItemInterface {
 
     private val TAG = ItemFragment::class.java.simpleName
     private val PARAM1 = "bread"
 
     private lateinit var binding: FragmentItemBinding
+    private lateinit var similarAdapter: SimilarRVAdapter
+
+    private val itemViewModel: ItemViewModel by viewModel()
+    private val mainViewModel: MainViewModel by sharedViewModel()
+
     private var bread: Bread? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -119,13 +132,57 @@ class ItemFragment : BottomSheetDialogFragment() {
             binding.bread = bread
             Glide.with(requireContext())
                 .load(bread.validImage())
-                .placeholder(R.drawable.ic_round_broken_image_32)
+                .placeholder(R.drawable.ic_baseline_broken_image_32)
                 .into(binding.ivBread)
         }
     }
 
     private fun setupSimilar() {
-        //TODO: Display similar breads
+        similarAdapter = SimilarRVAdapter(this)
+
+        itemViewModel.similar.collectWhenStarted(this) {
+            when (it) {
+                is Resource.Loading -> {
+                    binding.similarShimmerContainer.startShimmer()
+                    binding.similarShimmerContainer.visibility = View.VISIBLE
+                }
+                is Resource.Success -> {
+                    it.data?.let { similar -> similarAdapter.submitList(similar) }
+                    binding.similarShimmerContainer.stopShimmer()
+                    binding.similarShimmerContainer.visibility = View.GONE
+                }
+                is Resource.Error -> {
+                    it.error?.let { message -> showError(message) }
+                    it.data?.let { similar -> similarAdapter.submitList(similar) }
+                    binding.similarShimmerContainer.stopShimmer()
+                    binding.similarShimmerContainer.visibility = View.GONE
+                }
+            }
+        }
+        binding.apply {
+            rvSimilar.hasFixedSize()
+            rvSimilar.layoutManager =
+                LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
+            rvSimilar.adapter = similarAdapter
+        }
+    }
+
+    override fun onResume() {
+        binding.similarShimmerContainer.startShimmer()
+        super.onResume()
+    }
+
+    override fun onStop() {
+        binding.similarShimmerContainer.stopShimmer()
+        super.onStop()
+    }
+
+    fun showLoading(isLoading: Boolean) {
+        mainViewModel.showDialog(isLoading)
+    }
+
+    fun showError(errorMessage: String) {
+        requireView().shortSnackbar(errorMessage)
     }
 
     companion object {
@@ -137,5 +194,10 @@ class ItemFragment : BottomSheetDialogFragment() {
                     putParcelable(PARAM1, param1)
                 }
             }
+    }
+
+    override fun onItemSelected(position: Int, item: Bread) {
+        val fragment = ItemFragment.newInstance(item)
+        fragment.show(childFragmentManager, "")
     }
 }
