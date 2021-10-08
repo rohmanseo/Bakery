@@ -3,13 +3,11 @@ package com.icodeu.bakeryapp.presentation
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.icodeu.bakeryapp.R
+import com.icodeu.bakeryapp.core.utils.Resource
 import com.icodeu.bakeryapp.databinding.ActivityMainBinding
-import com.icodeu.bakeryapp.utils.Resource
 import com.icodeu.bakeryapp.utils.collectWhenStarted
-import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {

@@ -8,3 +8,6 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Bakery App"
 include(":app")
+include(":data")
+include(":domain")
+include(":core")

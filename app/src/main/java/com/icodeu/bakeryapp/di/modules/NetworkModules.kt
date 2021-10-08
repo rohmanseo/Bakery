@@ -1,11 +1,10 @@
 package com.icodeu.bakeryapp.di.modules
 
-import com.icodeu.bakeryapp.BuildConfig
 import com.icodeu.bakeryapp.data.remote.services.BreadService
 import com.icodeu.bakeryapp.data.remote.services.UserService
-import com.icodeu.bakeryapp.data.repository.UserRepositoryImpl
+import com.icodeu.bakeryapp.BuildConfig
+import com.icodeu.bakeryapp.core.utils.Constants.API_URL
 import com.icodeu.bakeryapp.domain.repository.UserRepository
-import com.icodeu.bakeryapp.utils.Constant
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
@@ -46,7 +45,7 @@ val networkModules = module {
     single {
         Retrofit.Builder()
             .addConverterFactory(MoshiConverterFactory.create(get()))
-            .baseUrl(Constant.API_URL)
+            .baseUrl(API_URL)
             .client(get())
             .build()
     }

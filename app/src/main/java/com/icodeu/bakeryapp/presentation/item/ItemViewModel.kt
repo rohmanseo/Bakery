@@ -4,11 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.icodeu.bakeryapp.domain.model.Bread
 import com.icodeu.bakeryapp.domain.use_case.bread.GetSimilarBreadUseCase
-import com.icodeu.bakeryapp.utils.Resource
+import com.icodeu.bakeryapp.core.utils.Resource
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.collect
 
 class ItemViewModel(
     private val getSimilarBreadUseCase: GetSimilarBreadUseCase,

@@ -18,7 +18,7 @@ import com.icodeu.bakeryapp.domain.model.Bread
 import com.icodeu.bakeryapp.presentation.MainViewModel
 import com.icodeu.bakeryapp.presentation.item.rv_adapters.SimilarRVAdapter
 import com.icodeu.bakeryapp.utils.CommonUtils.shortSnackbar
-import com.icodeu.bakeryapp.utils.Resource
+import com.icodeu.bakeryapp.core.utils.Resource
 import com.icodeu.bakeryapp.utils.collectWhenStarted
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -35,7 +35,7 @@ class ItemFragment : BottomSheetDialogFragment(), SimilarRVAdapter.SimilarItemIn
     private val itemViewModel: ItemViewModel by viewModel()
     private val mainViewModel: MainViewModel by sharedViewModel()
 
-    private var bread: Bread? = null
+    private var bread: com.icodeu.bakeryapp.domain.model.Bread? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -188,7 +188,7 @@ class ItemFragment : BottomSheetDialogFragment(), SimilarRVAdapter.SimilarItemIn
     companion object {
 
         @JvmStatic
-        fun newInstance(param1: Bread, param2: String? = "") =
+        fun newInstance(param1: com.icodeu.bakeryapp.domain.model.Bread, param2: String? = "") =
             ItemFragment().apply {
                 arguments = Bundle().apply {
                     putParcelable(PARAM1, param1)
@@ -196,7 +196,7 @@ class ItemFragment : BottomSheetDialogFragment(), SimilarRVAdapter.SimilarItemIn
             }
     }
 
-    override fun onItemSelected(position: Int, item: Bread) {
+    override fun onItemSelected(position: Int, item: com.icodeu.bakeryapp.domain.model.Bread) {
         val fragment = ItemFragment.newInstance(item)
         fragment.show(childFragmentManager, "")
     }

@@ -14,13 +14,13 @@ import com.icodeu.bakeryapp.domain.model.Bread
 class CarouselAdapter(private val interaction: Interaction? = null) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Bread>() {
+    val DIFF_CALLBACK = object : DiffUtil.ItemCallback<com.icodeu.bakeryapp.domain.model.Bread>() {
 
-        override fun areItemsTheSame(oldItem: Bread, newItem: Bread): Boolean {
+        override fun areItemsTheSame(oldItem: com.icodeu.bakeryapp.domain.model.Bread, newItem: com.icodeu.bakeryapp.domain.model.Bread): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: Bread, newItem: Bread): Boolean {
+        override fun areContentsTheSame(oldItem: com.icodeu.bakeryapp.domain.model.Bread, newItem: com.icodeu.bakeryapp.domain.model.Bread): Boolean {
             return oldItem == newItem
         }
 
@@ -52,7 +52,7 @@ class CarouselAdapter(private val interaction: Interaction? = null) :
         return differ.currentList.size
     }
 
-    fun submitList(list: List<Bread>) {
+    fun submitList(list: List<com.icodeu.bakeryapp.domain.model.Bread>) {
         differ.submitList(list)
     }
 
@@ -62,7 +62,7 @@ class CarouselAdapter(private val interaction: Interaction? = null) :
         private val interaction: Interaction?
     ) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(item: Bread) = with(itemView) {
+        fun bind(item: com.icodeu.bakeryapp.domain.model.Bread) = with(itemView) {
             itemView.setOnClickListener {
                 interaction?.onItemSelected(adapterPosition, item)
             }
@@ -83,6 +83,6 @@ class CarouselAdapter(private val interaction: Interaction? = null) :
     }
 
     interface Interaction {
-        fun onItemSelected(position: Int, item: Bread)
+        fun onItemSelected(position: Int, item: com.icodeu.bakeryapp.domain.model.Bread)
     }
 }

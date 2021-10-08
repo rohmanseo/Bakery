@@ -1,10 +1,7 @@
 <resources>
     <string name="app_name">Bakery App</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="register"><u>Register</u></string>
     <string name="login"><u>Login</u></string>
-    <string name="title_auth">Module Title</string>
-    <string name="title_sample_module">sample</string>
     <string name="button_buy_now">Buy Now</string>
     <string name="content_desc_bread_image">Bread Image</string>
     <string name="content_desc_back_button">Back Button</string>

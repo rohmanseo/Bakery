@@ -7,10 +7,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 
-class FakeUserRepository : UserRepository {
+class FakeUserRepository : com.icodeu.bakeryapp.domain.repository.UserRepository {
 
     companion object {
-        val validUser: User = User(1, "rohman", "rohman@gmail.com", "empty")
+        val validUser: com.icodeu.bakeryapp.domain.model.User =
+            com.icodeu.bakeryapp.domain.model.User(1, "rohman", "rohman@gmail.com", "empty")
         val validPassword = "password"
     }
 
@@ -19,7 +20,7 @@ class FakeUserRepository : UserRepository {
         return null
     }
 
-    override suspend fun login(email: String, password: String): User? {
+    override suspend fun login(email: String, password: String): com.icodeu.bakeryapp.domain.model.User? {
         if (password == validPassword && email == validUser.email) {
             return validUser
         } else {
@@ -32,15 +33,20 @@ class FakeUserRepository : UserRepository {
         email: String,
         password: String,
         password_confirmation: String
-    ): User? {
-        return User(id = 1, name = name, email = email, token = "empty")
+    ): com.icodeu.bakeryapp.domain.model.User? {
+        return com.icodeu.bakeryapp.domain.model.User(
+            id = 1,
+            name = name,
+            email = email,
+            token = "empty"
+        )
     }
 
-    override suspend fun getLoggedInUser(): Flow<Resource<User?>> {
+    override suspend fun getLoggedInUser(): Flow<com.icodeu.bakeryapp.utils.Resource<com.icodeu.bakeryapp.domain.model.User?>> {
         return flow {
             emit(validUser)
         }.map {
-            Resource.Success(it)
+            com.icodeu.bakeryapp.utils.Resource.Success(it)
         }
     }
 
@@ -48,11 +54,11 @@ class FakeUserRepository : UserRepository {
         return true
     }
 
-    override suspend fun isLoggedIn(): Flow<Resource<Boolean>> {
+    override suspend fun isLoggedIn(): Flow<com.icodeu.bakeryapp.utils.Resource<Boolean>> {
         return flow {
             emit(true)
         }.map {
-            Resource.Success(it)
+            com.icodeu.bakeryapp.utils.Resource.Success(it)
         }
     }
 
