@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.icodeu.bakeryapp.R
+import com.icodeu.bakeryapp.core.utils.Resource
 import com.icodeu.bakeryapp.databinding.FragmentHomeBinding
 import com.icodeu.bakeryapp.domain.model.Bread
 import com.icodeu.bakeryapp.domain.model.User
@@ -24,7 +25,7 @@ import com.icodeu.bakeryapp.presentation.home.rv_adapters.CarouselAdapter
 import com.icodeu.bakeryapp.presentation.home.rv_adapters.RecommedRVAdapter
 import com.icodeu.bakeryapp.presentation.item.ItemFragment
 import com.icodeu.bakeryapp.utils.CommonUtils.shortSnackbar
-import com.icodeu.bakeryapp.utils.Resource
+
 import com.icodeu.bakeryapp.utils.collectWhenStarted
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -82,7 +83,7 @@ class HomeFragment : Fragment(), CarouselAdapter.Interaction,
                 is Resource.Success -> {
                     if (it.data != null) {
                         it.data.let { user ->
-                            binding.tvUserName.setText("Wecome\n${user.name}")
+                            binding.tvUserName.setText("Wecome\n${user?.name}")
                         }
                         setupProfileDialog(it.data)
                     }
@@ -140,7 +141,7 @@ class HomeFragment : Fragment(), CarouselAdapter.Interaction,
         }
     }
 
-    fun setupProfileDialog(user: User? = null) {
+    fun setupProfileDialog(user: com.icodeu.bakeryapp.domain.model.User? = null) {
         val profileView =
             LayoutInflater.from(requireContext()).inflate(R.layout.dialog_profile, null, false)
         val btnLogout = profileView.findViewById(R.id.btnLogout) as Button
@@ -242,7 +243,7 @@ class HomeFragment : Fragment(), CarouselAdapter.Interaction,
             }
     }
 
-    override fun onItemSelected(position: Int, item: Bread) {
+    override fun onItemSelected(position: Int, item: com.icodeu.bakeryapp.domain.model.Bread) {
         val fragment = ItemFragment.newInstance(item)
         fragment.show(childFragmentManager, "")
     }

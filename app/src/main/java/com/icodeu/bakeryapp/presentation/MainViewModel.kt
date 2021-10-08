@@ -2,32 +2,33 @@ package com.icodeu.bakeryapp.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.icodeu.bakeryapp.core.utils.Resource
 import com.icodeu.bakeryapp.domain.model.User
 import com.icodeu.bakeryapp.domain.use_case.main.ShowDialogUseCase
 import com.icodeu.bakeryapp.domain.use_case.user.GetUserUseCase
 import com.icodeu.bakeryapp.domain.use_case.user.IsLoggedInUseCase
-import com.icodeu.bakeryapp.utils.Resource
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.collect
 
 class MainViewModel(
     private val showDialogUseCase: ShowDialogUseCase,
-    private val getUserUseCase: GetUserUseCase,
-    private val isLoggedInUseCase: IsLoggedInUseCase
-) : ViewModel() {
+    private val isLoggedInUseCase: IsLoggedInUseCase,
+    private val getUserUseCase: GetUserUseCase
+    ) : ViewModel() {
 
     private val _showDialog = MutableSharedFlow<Resource<Boolean>>()
     val showDialog: SharedFlow<Resource<Boolean>>
-        get() = _showDialog.asSharedFlow()
+        get() = _showDialog
     private val _isLoggedIn =
         MutableSharedFlow<Resource<Boolean>>()
     val isLoggedIn: SharedFlow<Resource<Boolean>>
         get() = _isLoggedIn
     private val _user =
-        MutableSharedFlow<Resource<User?>>(1)
+        MutableSharedFlow<Resource<User?>>(
+            1
+        )
     val user: SharedFlow<Resource<User?>>
         get() = _user
 

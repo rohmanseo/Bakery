@@ -2,12 +2,12 @@ package com.icodeu.bakeryapp.presentation.register
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.icodeu.bakeryapp.core.utils.Resource
 import com.icodeu.bakeryapp.domain.model.User
 import com.icodeu.bakeryapp.domain.use_case.user.RegisterUseCase
-import com.icodeu.bakeryapp.utils.Resource
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class RegisterViewModel(private val registerUseCase: RegisterUseCase) :

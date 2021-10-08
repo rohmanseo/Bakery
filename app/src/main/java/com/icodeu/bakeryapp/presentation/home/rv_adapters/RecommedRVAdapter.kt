@@ -16,13 +16,13 @@ import com.icodeu.bakeryapp.domain.model.Bread
 class RecommedRVAdapter(private val interaction: RecommendedItemInterface? = null) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Bread>() {
+    val DIFF_CALLBACK = object : DiffUtil.ItemCallback<com.icodeu.bakeryapp.domain.model.Bread>() {
 
-        override fun areItemsTheSame(oldItem: Bread, newItem: Bread): Boolean {
+        override fun areItemsTheSame(oldItem: com.icodeu.bakeryapp.domain.model.Bread, newItem: com.icodeu.bakeryapp.domain.model.Bread): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: Bread, newItem: Bread): Boolean {
+        override fun areContentsTheSame(oldItem: com.icodeu.bakeryapp.domain.model.Bread, newItem: com.icodeu.bakeryapp.domain.model.Bread): Boolean {
             return oldItem == newItem
         }
 
@@ -54,7 +54,7 @@ class RecommedRVAdapter(private val interaction: RecommendedItemInterface? = nul
         return differ.currentList.size
     }
 
-    fun submitList(list: List<Bread>) {
+    fun submitList(list: List<com.icodeu.bakeryapp.domain.model.Bread>) {
         differ.submitList(list)
     }
 
@@ -64,7 +64,7 @@ class RecommedRVAdapter(private val interaction: RecommendedItemInterface? = nul
         private val interaction: RecommendedItemInterface?
     ) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(item: Bread) = with(itemView) {
+        fun bind(item: com.icodeu.bakeryapp.domain.model.Bread) = with(itemView) {
             itemView.setOnClickListener {
                 interaction?.onItemSelected(adapterPosition, item)
             }
@@ -85,6 +85,6 @@ class RecommedRVAdapter(private val interaction: RecommendedItemInterface? = nul
     }
 
     interface RecommendedItemInterface {
-        fun onItemSelected(position: Int, item: Bread)
+        fun onItemSelected(position: Int, item: com.icodeu.bakeryapp.domain.model.Bread)
     }
 }

@@ -9,13 +9,14 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.icodeu.bakeryapp.R
+import com.icodeu.bakeryapp.core.utils.Resource
 import com.icodeu.bakeryapp.databinding.FragmentLoginBinding
 import com.icodeu.bakeryapp.presentation.MainViewModel
 import com.icodeu.bakeryapp.utils.CommonUtils.isNotEmpty
 import com.icodeu.bakeryapp.utils.CommonUtils.isNotError
 import com.icodeu.bakeryapp.utils.CommonUtils.isValidEmail
 import com.icodeu.bakeryapp.utils.CommonUtils.shortSnackbar
-import com.icodeu.bakeryapp.utils.Resource
+import kotlinx.coroutines.flow.collect
 import com.icodeu.bakeryapp.utils.collectWhenStarted
 import com.icodeu.bakeryapp.utils.flowBinding.textChanges
 import kotlinx.coroutines.ExperimentalCoroutinesApi

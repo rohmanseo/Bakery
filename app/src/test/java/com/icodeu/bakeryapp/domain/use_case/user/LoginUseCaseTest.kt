@@ -11,15 +11,15 @@ import kotlin.test.assertNotEquals
 
 class LoginUseCaseTest {
 
-    private lateinit var userRepository: UserRepository
-    private lateinit var loginUseCase: LoginUseCase
+    private lateinit var userRepository: com.icodeu.bakeryapp.domain.repository.UserRepository
+    private lateinit var loginUseCase: com.icodeu.bakeryapp.domain.use_case.user.LoginUseCase
     private val validEmailAndPassword = arrayOf("rohman@gmail.com", "password")
     private val inValidEmailAndPassword = arrayOf("rohman@gmail.com", "invalidpsswd")
 
     @Before
     fun setUp() {
         userRepository = FakeUserRepository()
-        loginUseCase = LoginUseCase(userRepository)
+        loginUseCase = com.icodeu.bakeryapp.domain.use_case.user.LoginUseCase(userRepository)
     }
 
     @Test

@@ -2,14 +2,14 @@ package com.icodeu.bakeryapp.presentation.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.icodeu.bakeryapp.core.utils.Resource
 import com.icodeu.bakeryapp.domain.model.Bread
 import com.icodeu.bakeryapp.domain.use_case.bread.GetPopularBreadUseCase
 import com.icodeu.bakeryapp.domain.use_case.bread.GetRecentBreadUseCase
 import com.icodeu.bakeryapp.domain.use_case.user.LogoutUseCase
-import com.icodeu.bakeryapp.utils.Resource
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class HomeViewModel(

@@ -8,11 +8,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.icodeu.bakeryapp.R
+import com.icodeu.bakeryapp.core.utils.Resource
 import com.icodeu.bakeryapp.presentation.MainViewModel
-import com.icodeu.bakeryapp.utils.Resource
 import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class SplashscreenFragment : Fragment() {

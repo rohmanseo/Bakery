@@ -5,7 +5,7 @@ import android.view.View
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import com.icodeu.bakeryapp.utils.Constant.BASE_URL
+import com.icodeu.bakeryapp.core.utils.Constants.BASE_URL
 
 object CommonUtils {
     fun String.isValidEmail(): Boolean {
