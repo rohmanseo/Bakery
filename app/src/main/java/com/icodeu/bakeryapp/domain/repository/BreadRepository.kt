@@ -8,4 +8,6 @@ interface BreadRepository {
     suspend fun getRecentCache(): List<Bread>
     suspend fun getPopular(): List<Bread>
     suspend fun getPopularCache(): List<Bread>
+    suspend fun getSimilar(): List<Bread>
+    suspend fun getSimilarCache(): List<Bread>
 }

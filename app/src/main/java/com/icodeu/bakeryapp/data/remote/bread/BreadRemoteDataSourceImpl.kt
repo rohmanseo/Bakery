@@ -23,4 +23,13 @@ class BreadRemoteDataSourceImpl(private val breadService: BreadService):BreadRem
             throw Exception(HttpErrorCode.getErrorMessage(result.code()))
         }
     }
+
+    override suspend fun getSimilar(): List<Bread>? {
+        val result = breadService.similar()
+        if (result.isSuccessful) {
+            return result.body()?.breads
+        } else {
+            throw Exception(HttpErrorCode.getErrorMessage(result.code()))
+        }
+    }
 }

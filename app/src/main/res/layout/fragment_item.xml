@@ -167,7 +167,7 @@
                         app:layout_constraintTop_toBottomOf="@id/textView3">
 
                         <com.facebook.shimmer.ShimmerFrameLayout
-                            android:id="@+id/recent_shimmer_container"
+                            android:id="@+id/similar_shimmer_container"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -193,7 +193,7 @@
                             android:layout_height="match_parent">
 
                             <androidx.recyclerview.widget.RecyclerView
-                                android:id="@+id/rvRecommended"
+                                android:id="@+id/rvSimilar"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
