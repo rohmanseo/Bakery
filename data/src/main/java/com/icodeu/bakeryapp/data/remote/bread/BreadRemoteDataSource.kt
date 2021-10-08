@@ -1,4 +1,4 @@
-package com.bakeryapp.data.remote.bread
+package com.icodeu.bakeryapp.data.remote.bread
 
 import com.icodeu.bakeryapp.domain.model.Bread
 

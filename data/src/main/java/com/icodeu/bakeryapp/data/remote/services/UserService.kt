@@ -1,4 +1,4 @@
-package com.bakeryapp.data.remote.services
+package com.icodeu.bakeryapp.data.remote.services
 
 import com.icodeu.bakeryapp.domain.model.SimpleSuccessResponse
 import com.icodeu.bakeryapp.domain.model.User

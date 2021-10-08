@@ -1,6 +1,6 @@
-package com.bakeryapp.data.remote.bread
+package com.icodeu.bakeryapp.data.remote.bread
 
-import com.bakeryapp.data.remote.services.BreadService
+import com.icodeu.bakeryapp.data.remote.services.BreadService
 import com.icodeu.bakeryapp.core.utils.HttpErrorCode
 import com.icodeu.bakeryapp.domain.model.Bread
 
