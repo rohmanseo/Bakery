@@ -16,6 +16,9 @@ interface BreadDao {
     @Query("SELECT * FROM `bread` ORDER BY `views` DESC LIMIT 4")
     suspend fun popular(): List<Bread>
 
+    @Query("SELECT * FROM `bread` LIMIT 8")
+    suspend fun similar(): List<Bread>
+
     @Insert(onConflict = REPLACE)
     suspend fun insert(bread: Bread)
 

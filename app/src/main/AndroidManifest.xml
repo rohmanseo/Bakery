@@ -10,7 +10,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.BakeryApp">
+        android:theme="@style/Theme.BakeryApp"
+        android:usesCleartextTraffic="true">
         <activity
             android:name=".presentation.MainActivity"
             android:exported="true">
@@ -20,6 +21,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

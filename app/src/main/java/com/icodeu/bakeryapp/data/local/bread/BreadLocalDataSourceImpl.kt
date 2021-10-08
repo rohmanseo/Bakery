@@ -12,6 +12,10 @@ class BreadLocalDataSourceImpl(private val breadDao: BreadDao):BreadLocalDataSou
         return breadDao.recent()
     }
 
+    override suspend fun getSimilar(): List<Bread> {
+        return breadDao.similar()
+    }
+
     override fun update() {
 
     }

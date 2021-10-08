@@ -1,9 +1,7 @@
 package com.icodeu.bakeryapp.data.repository
 
 import com.icodeu.bakeryapp.data.local.bread.BreadLocalDataSource
-import com.icodeu.bakeryapp.data.local.bread.BreadLocalDataSourceImpl
 import com.icodeu.bakeryapp.data.remote.bread.BreadRemoteDataSource
-import com.icodeu.bakeryapp.data.remote.bread.BreadRemoteDataSourceImpl
 import com.icodeu.bakeryapp.domain.model.Bread
 import com.icodeu.bakeryapp.domain.repository.BreadRepository
 
@@ -36,4 +34,15 @@ class BreadRepositoryImpl(
         return breadLocalDataSource.getRecent()
     }
 
+    override suspend fun getSimilar(): List<Bread> {
+        val remoteData = breadRemoteDataSource.getSimilar()
+        if (!remoteData.isNullOrEmpty()){
+            breadLocalDataSource.insert(remoteData)
+        }
+        return breadLocalDataSource.getSimilar()
+    }
+
+    override suspend fun getSimilarCache(): List<Bread> {
+        return breadLocalDataSource.getSimilar()
+    }
 }

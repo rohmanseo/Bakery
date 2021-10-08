@@ -1,33 +1,251 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:shimmer="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
+        <variable
+            name="bread"
+            type="com.icodeu.bakeryapp.domain.model.Bread" />
     </data>
 
-    <RelativeLayout
-        
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/black"
-        tools:context=".presentation.item.ItemFragment">
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/imgBuild"
-            android:layout_width="300dp"
-            android:layout_height="300dp"
-            android:layout_centerInParent="true"
-            android:src="@drawable/ic_baseline_local_fire_department_24" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:theme="@style/Theme.BakeryApp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/imgBuild"
-            android:layout_centerHorizontal="true"
-            android:text="Under construction"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textColor="@color/white" />
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appBarLayout"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/white"
+                android:elevation="16dp"
+                android:paddingTop="@dimen/padding_small"
+                android:paddingBottom="@dimen/padding_small"
+                app:layout_constraintTop_toTopOf="parent">
 
-    </RelativeLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/btnBack"
+                        android:layout_width="?attr/actionBarSize"
+                        android:layout_height="match_parent"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="@string/content_desc_back_button"
+                        android:src="@drawable/ic_round_arrow_back_ios_24"
+                        app:tint="@android:color/darker_gray" />
+
+                    <androidx.appcompat.widget.SearchView
+                        android:id="@+id/svMain"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/margin_medium"
+                        android:background="@drawable/rounded_shape_gray"
+                        android:backgroundTint="#F2F2F2"
+                        android:focusable="false"
+                        android:textSize="12sp"
+                        app:iconifiedByDefault="false"
+                        app:queryBackground="@color/transparent"
+                        app:queryHint="Search want to buy" />
+
+                </LinearLayout>
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <ScrollView
+                android:id="@+id/scrollView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@id/divider"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/containerDetail"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/rounded_shape_white"
+                    android:backgroundTint="@color/transparent"
+                    android:theme="@style/Theme.BakeryApp">
+
+                    <View
+                        android:id="@+id/view"
+                        android:layout_width="50dp"
+                        android:layout_height="5dp"
+                        android:layout_marginTop="@dimen/margin_medium"
+                        android:background="@drawable/rounded_shape_gray"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/ivBread"
+                        android:layout_width="0dp"
+                        android:layout_height="250dp"
+                        android:layout_marginTop="@dimen/margin_large"
+                        android:contentDescription="@string/content_desc_bread_image"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/view" />
+
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/toggleFavorite"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_medium"
+                        android:button="@drawable/sl_favorite_24dp"
+                        app:buttonTint="#F44336"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/ivBread"
+                        tools:ignore="SpeakableTextPresentCheck" />
+
+                    <TextView
+                        android:id="@+id/tvName"
+                        style="@style/Heading5"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_medium"
+                        android:layout_marginTop="@dimen/margin_medium"
+                        android:text="@{bread.name}"
+                        android:textColor="#121212"
+                        app:layout_constraintEnd_toStartOf="@+id/toggleFavorite"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/ivBread"
+                        tools:text="Bakery Name" />
+
+                    <TextView
+                        android:id="@+id/tvRating"
+                        style="@style/Body2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:text="@{bread.rating+` (123 Reviews)`}"
+                        app:drawableLeftCompat="@drawable/ic_round_star_24"
+                        app:drawableTint="#FF9800"
+                        app:layout_constraintStart_toStartOf="@+id/tvName"
+                        app:layout_constraintTop_toBottomOf="@+id/tvName" />
+
+                    <TextView
+                        android:id="@+id/tvSold"
+                        style="@style/Body2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="@dimen/padding_small"
+                        android:gravity="center_vertical"
+                        android:text=" | Terjual 353"
+                        app:layout_constraintBottom_toBottomOf="@+id/tvRating"
+                        app:layout_constraintStart_toEndOf="@+id/tvRating"
+                        app:layout_constraintTop_toTopOf="@+id/tvRating" />
+
+                    <TextView
+                        android:id="@+id/textView3"
+                        style="@style/Heading6"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_medium"
+                        android:text="Similar Breads"
+                        android:textColor="#121212"
+                        app:layout_constraintEnd_toEndOf="@+id/toggleFavorite"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toStartOf="@+id/tvName"
+                        app:layout_constraintTop_toBottomOf="@+id/tvRating" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_small"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:orientation="vertical"
+                        app:layout_constraintTop_toBottomOf="@id/textView3">
+
+                        <com.facebook.shimmer.ShimmerFrameLayout
+                            android:id="@+id/similar_shimmer_container"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="@dimen/margin_small"
+                            android:orientation="horizontal"
+                            shimmer:duration="800">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <include layout="@layout/recent_shimmer_layout" />
+
+                                <include layout="@layout/recent_shimmer_layout" />
+
+                                <include layout="@layout/recent_shimmer_layout" />
+                            </LinearLayout>
+                        </com.facebook.shimmer.ShimmerFrameLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/rvSimilar"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:nestedScrollingEnabled="false"
+                                android:orientation="horizontal"
+                                android:paddingLeft="@dimen/padding_medium"
+                                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                                tools:listitem="@layout/item_carousel_recommended" />
+                        </RelativeLayout>
+                    </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </ScrollView>
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#F1F1F1"
+                app:layout_constraintBottom_toTopOf="@id/footer" />
+
+            <LinearLayout
+                android:id="@+id/footer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/padding_medium"
+                android:paddingRight="@dimen/padding_medium"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <TextView
+                    android:id="@+id/tvPrice"
+                    style="@style/Heading5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/margin_medium"
+                    android:text="@{String.valueOf(bread.shortPrice())+`K`}"
+                    android:textColor="#121212"
+                    tools:text="12K" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnBuyNow"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lato_bold"
+                    android:padding="@dimen/padding_small"
+                    android:stateListAnimator="@null"
+                    android:text="@string/button_buy_now"
+                    android:textAllCaps="false"
+                    app:cornerRadius="8dp" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

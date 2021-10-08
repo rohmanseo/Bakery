@@ -12,5 +12,8 @@ interface BreadService {
     @GET("breads/recent")
     suspend fun recent(): Response<BreadResponse>
 
+    @GET("breads/recent")
+    suspend fun similar(): Response<BreadResponse>
+
 
 }

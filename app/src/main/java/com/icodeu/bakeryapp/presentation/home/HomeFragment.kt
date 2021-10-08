@@ -243,6 +243,7 @@ class HomeFragment : Fragment(), CarouselAdapter.Interaction,
     }
 
     override fun onItemSelected(position: Int, item: Bread) {
-        ItemFragment().show(childFragmentManager, "")
+        val fragment = ItemFragment.newInstance(item)
+        fragment.show(childFragmentManager, "")
     }
 }
